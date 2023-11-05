@@ -1,0 +1,118 @@
+@charset "utf-8";
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+
+// // Set your brand colors
+// $purple: #9c106e;
+// $pink: #70313b;
+// $brown: #757763;
+// $beige-light: #D0D1CD;
+// $beige-lighter: #EFF0EB;
+
+// // Update Bulma's global variables
+// // $family-sans-serif: "Nunito", sans-serif;
+// $grey-dark: $brown;
+// $grey-light: $beige-light;
+// $primary: $purple;
+// $link: $pink;
+// $widescreen-enabled: false;
+// $fullhd-enabled: false;
+
+// // Update some of Bulma's component variables
+// $body-background-color: $beige-lighter;
+// $control-border-width: 2px;
+// $input-border-color: transparent;
+// $input-shadow: none;
+
+
+
+// ===================BEGIN: Theme 1 =======================
+
+// ===================END  : Theme 1 =======================
+
+
+
+
+
+@import "../../node_modules/bulma/bulma.sass";
+@import "../../node_modules/bulma-social/css/all.css";
+@import "../../node_modules/bulma-timeline/dist/css/bulma-timeline.sass";
+
+.sk-section-heading {
+    @extend .is-size-3;
+    @extend .has-text-weight-light;
+
+}
+
+.sk-subsection-heading {
+    @extend .is-size-4;
+    @extend .has-text-weight-light;
+}
+
+
+.sk-profile-image {
+    border-style: solid;
+    border-width: 0;
+    // border-color: black;
+    // border-width: 0.01em;
+}
+
+.sk-workexp-role {
+    @extend .is-size-5;
+    @extend .has-text-weight-normal;
+    @extend .is-family-primary;
+    // @extend .tag;
+}
+
+.sk-workexp-institution {
+    @extend .is-size-5;
+    @extend .has-text-weight-light;
+    // @extend .tag;
+}
+
+.sk-workexp-dates {
+    @extend .is-size-6;
+    // @extend .tag;
+    @extend .is-primary;
+    // @extend .is-light;
+    @extend .has-text-weight-light;
+
+    // @extend .has-background-warning-dark;
+    // @extend .tag;
+}
+
+.sk-workexp-text {
+    @extend .has-text-weight-normal;
+    @extend .is-size-6;
+    // font-size: 0.8rem !important;
+}
+
+// PORTFOLIO css classes BEGIN
+.sk-portfolio-title {
+    @extend .sk-workexp-role;
+    // @extend .is-size-5;
+    // @extend .has-text-weight-normal;
+    // @extend .is-family-primary;
+    // @extend .tag;
+}
+
+.sk-portfolio-info {
+    @extend .sk-workexp-text 
+}
+
+.sk-portfolio-dates {
+    @extend .sk-workexp-dates 
+}
+
+.sk-portfolio-institution {
+    @extend .sk-workexp-institution
+}
+
+.sk-portfolio-intro-image {
+    @extend .is-one-third-widescreen
+}
+
+
+// PORTFOLIO css classes :end
+
+
