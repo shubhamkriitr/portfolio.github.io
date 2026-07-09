@@ -1,0 +1,34 @@
+% Publications for shubham.ch — rendered on the /publications/ page.
+% Custom as-folio fields: abbr, abstract, html, pdf, preview, selected, bibtex_show.
+% `selected = {true}` surfaces the entry in "Selected publications" on the about page.
+
+@inproceedings{kumar2018infinet,
+  abbr        = {ISBI},
+  title       = {InfiNet: Fully Convolutional Networks for Infant Brain MRI Segmentation},
+  author      = {Kumar, Shubham and Conjeti, S. and Roy, A. G. and Wachinger, C. and Navab, N.},
+  booktitle   = {2018 IEEE 15th International Symposium on Biomedical Imaging (ISBI 2018)},
+  address     = {Washington, DC},
+  pages       = {145--148},
+  year        = {2018},
+  html        = {https://ieeexplore.ieee.org/abstract/document/8363542},
+  preview     = {infinet.png},
+  selected    = {true},
+  bibtex_show = {true},
+  abstract    = {We present a novel, parameter-efficient and practical fully convolutional neural network architecture, termed InfiNet, aimed at voxel-wise semantic segmentation of infant brain MRI images at iso-intense stage, which can be easily extended for other segmentation tasks involving multi-modalities. InfiNet consists of double encoder arms for T1 and T2 input scans that feed into a joint-decoder arm that terminates in the classification layer. The novelty of InfiNet lies in the manner in which the decoder upsamples lower resolution input feature map(s) from multiple encoder arms. Specifically, the pooled indices computed in the max-pooling layers of each of the encoder blocks are related to the corresponding decoder block to perform non-linear learning-free upsampling. The sparse maps are concatenated with intermediate encoder representations (skip connections) and convolved with trainable filters to produce dense feature maps. InfiNet is trained end-to-end to optimize for the Generalized Dice Loss, which is well-suited for high class imbalance. InfiNet achieves the whole-volume segmentation in under 50 seconds and we demonstrate competitive performance against multiple state-of-the-art deep architectures and their multi-modal variants.}
+}
+
+@inproceedings{kumar2018dpnn,
+  abbr        = {DLMIA},
+  title       = {Learning Optimal Deep Projection of 18F-FDG PET Imaging for Early Differential Diagnosis of Parkinsonian Syndromes},
+  author      = {Kumar, Shubham and others},
+  booktitle   = {Deep Learning in Medical Image Analysis 2018 (DLMIA), ML-CDS 2018, Granada, Spain},
+  series      = {Lecture Notes in Computer Science},
+  volume      = {11045},
+  publisher   = {Springer, Cham},
+  year        = {2018},
+  html        = {https://link.springer.com/chapter/10.1007/978-3-030-00889-5_26},
+  preview     = {dpnn.png},
+  selected    = {true},
+  bibtex_show = {true},
+  abstract    = {Several diseases of parkinsonian syndromes present similar symptoms at early stage and no objective widely used diagnostic methods have been approved until now. Positron emission tomography (PET) with 18F-FDG was shown to be able to assess early neuronal dysfunction of synucleinopathies and tauopathies. Tensor factorization (TF) based approaches have been applied to identify characteristic metabolic patterns for differential diagnosis. However, these conventional dimension-reduction strategies assume linear or multi-linear relationships inside data, and are therefore insufficient to distinguish nonlinear metabolic differences between various parkinsonian syndromes. In this paper, we propose a Deep Projection Neural Network (DPNN) to identify characteristic metabolic pattern for early differential diagnosis of parkinsonian syndromes. We draw our inspiration from the existing TF methods. The network consists of a (i) compression part, which uses a deep network to learn optimal 2D projections of 3D scans, and a (ii) classification part, which maps the 2D projections to labels. The compression part can be pre-trained using surplus unlabelled datasets. Also, as the classification part operates on these 2D projections, it can be trained end-to-end effectively with limited labelled data, in contrast to 3D approaches. We show that DPNN is more effective in comparison to existing state-of-the-art and plausible baselines.}
+}

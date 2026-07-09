@@ -1,0 +1,102 @@
+# RenderCV YAML format — https://docs.rendercv.com/
+# Rendered by the CV page when site.cv.format is 'rendercv'.
+
+cv:
+  name: Shubham Kumar
+  location: Zürich, Switzerland
+  email: shubhamkumar.iitr@gmail.com
+  website: https://shubham.ch
+  summary: >-
+    M.Sc. Computer Science (ETH Zürich) working in machine learning and computer
+    vision, with research spanning medical image analysis, 3D vision, and
+    efficient deep learning.
+  social_networks:
+    - network: GitHub
+      username: shubhamkriitr
+    - network: LinkedIn
+      username: shubhamkumar101
+
+  sections:
+    experience:
+      - company: ETH Zürich — Product Development Group
+        position: Research Assistant
+        location: Zürich, Switzerland
+        start_date: 2023-12
+        end_date: present
+        highlights:
+          - Developing few-shot visual anomaly detection models for industrial component inspection.
+
+      - company: Disney Research | Studios
+        position: Master's Thesis Student
+        location: Zürich, Switzerland
+        start_date: 2023-03
+        end_date: 2023-09
+        highlights:
+          - Developed an efficient transformer network for topology-independent shape modeling.
+
+      - company: Oracle India — Oracle Cloud AI Services (OCAS)
+        position: Member of Technical Staff
+        location: Bengaluru, India
+        start_date: 2020-10
+        end_date: 2021-09
+        highlights:
+          - End-to-end experimentation with deep learning models for NLP, making them production ready and exposing them as cloud services via APIs.
+
+      - company: Oracle India — Oracle Applications Lab (OAL)
+        position: Software Developer
+        location: Bengaluru, India
+        start_date: 2018-07
+        end_date: 2020-09
+        highlights:
+          - Developed cloud software solutions to streamline and optimize supply-chain processes for Oracle's hardware business.
+
+      - company: Technical University of Munich — Department of Computer Science
+        position: Research Intern
+        location: Munich, Germany
+        start_date: 2017-05
+        end_date: 2017-07
+        highlights:
+          - Developed a deep-learning system to segment structures in infant-brain MRIs and mitigate problems associated with isointense scans.
+
+    education:
+      - institution: ETH Zürich
+        area: Computer Science
+        degree: M.Sc.
+        start_date: 2021
+        end_date: 2023
+
+      - institution: Indian Institute of Technology Roorkee
+        area: Electrical Engineering
+        degree: B.Tech.
+        start_date: 2014
+        end_date: 2018
+
+      - institution: Holy Mission Secondary School (CBSE)
+        degree: Twelfth (Intermediate of Science)
+        start_date: 2012
+        end_date: 2014
+
+      - institution: New Delhi Public School (CBSE)
+        degree: Tenth (Matriculation)
+        start_date: 2011
+        end_date: 2012
+
+    publications:
+      - title: 'InfiNet: Fully Convolutional Networks for Infant Brain MRI Segmentation'
+        authors:
+          - S. Kumar
+          - S. Conjeti
+          - A. G. Roy
+          - C. Wachinger
+          - N. Navab
+        date: 2018
+        journal: 2018 IEEE 15th International Symposium on Biomedical Imaging (ISBI 2018)
+        url: https://ieeexplore.ieee.org/abstract/document/8363542
+
+      - title: 'Learning Optimal Deep Projection of 18F-FDG PET Imaging for Early Differential Diagnosis of Parkinsonian Syndromes'
+        authors:
+          - S. Kumar
+          - et al.
+        date: 2018
+        journal: 'Deep Learning in Medical Image Analysis 2018, ML-CDS 2018 (LNCS vol. 11045, Springer)'
+        url: https://link.springer.com/chapter/10.1007/978-3-030-00889-5_26

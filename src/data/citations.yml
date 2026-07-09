@@ -1,0 +1,5 @@
+# Citation counts for the publications page.
+#
+# Keys are `google_scholar_id` values from papers.bib; values are citation counts.
+# Empty until a publication is given a `google_scholar_id` in papers.bib.
+{}

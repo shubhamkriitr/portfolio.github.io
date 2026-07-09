@@ -1,0 +1,8 @@
+# Venue / journal abbreviation → full name mapping.
+# Used by the publications page to expand abbreviated venue names.
+#
+# Format:
+#   ABBR: Full Name
+
+ISBI: IEEE International Symposium on Biomedical Imaging
+DLMIA: Deep Learning in Medical Image Analysis

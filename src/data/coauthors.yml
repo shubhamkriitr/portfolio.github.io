@@ -1,0 +1,9 @@
+# Co-author display name overrides.
+# Maps last names (or full names) to a display record used by the publications
+# page to linkify author names. Add entries as needed, e.g.:
+#
+#   Wachinger:
+#     url: https://example.com
+#     scholar: XXXXXXXX
+#
+# Left intentionally empty — no external profile links are asserted.
