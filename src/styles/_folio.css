@@ -54,10 +54,11 @@
 }
 .folio-pagetitle {
   font-family: var(--font-heading);
-  font-size: clamp(2.1rem, 4.5vw, 2.85rem);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  /* Single-weight display serif: 400 only, hierarchy from size. */
+  font-size: clamp(2.3rem, 5vw, 3.1rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.012em;
   color: var(--global-text-color);
   margin: 0;
 }
@@ -375,19 +376,22 @@ a.folio-entry-title:hover {
   margin: 0;
 }
 .folio-name {
-  font-size: clamp(2.6rem, 6.2vw, 3.6rem);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.028em;
+  /* Single-weight display serif: 400 only, hierarchy from size. */
+  font-size: clamp(2.9rem, 7vw, 4.1rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.015em;
   margin: 0;
   color: var(--global-text-color);
 }
+/* Lead statement: what you build. Primary voice, not muted metadata. */
 .folio-role {
-  font-size: 1.05rem;
-  line-height: 1.55;
-  color: var(--global-text-color-light);
-  margin: 1rem 0 0;
-  max-width: 36ch;
+  font-size: 1.22rem;
+  line-height: 1.45;
+  color: var(--global-text-color);
+  margin: 1.15rem 0 0;
+  max-width: 32ch;
+  text-wrap: balance;
 }
 .folio-role :where(a) {
   color: var(--global-text-color);
@@ -397,6 +401,29 @@ a.folio-entry-title:hover {
 .folio-role :where(a:hover) {
   border-color: var(--global-theme-color);
   color: var(--global-theme-color);
+}
+
+/* Supporting credentials: mono, muted — reads as a caption under the lead. */
+.folio-credentials {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.7;
+  color: var(--global-text-color-light);
+  margin: 1rem 0 0;
+}
+.folio-credentials :where(a) {
+  color: var(--global-text-color-light);
+  text-decoration: none;
+  border-bottom: 1px solid var(--global-divider-color);
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.folio-credentials :where(a:hover) {
+  color: var(--global-theme-color);
+  border-color: var(--global-theme-color);
 }
 .folio-links {
   margin-top: 1.5rem;

@@ -54,13 +54,20 @@ export const site = {
     avatar: '/assets/img/prof_pic.jpg',
 
     /**
-     * Subtitle below your name on the about page.
+     * Lead line below your name on the home page — say what you build, not
+     * where you studied. Credentials belong in `credentials` below.
      * HTML is supported.
      */
-    subtitle: `M.Sc. Computer Science,
-      <a href="https://inf.ethz.ch/" target="_blank" rel="noopener noreferrer">ETH Zürich</a>
-      &nbsp;·&nbsp;
-      Machine Learning Data Engineer @ Ethon`,
+    subtitle: `I build production-ready ML systems for computer vision and
+      vision&#8211;language models.`,
+
+    /**
+     * Supporting credential line, rendered as a mono rule under the lead line.
+     * Keep it short — it is metadata, not a sentence. HTML is supported.
+     * Set to an empty string to hide.
+     */
+    credentials: `M.Sc. <a href="https://inf.ethz.ch/" target="_blank" rel="noopener noreferrer">ETH Zürich</a>
+      &nbsp;·&nbsp; ML Data Engineer, Ethon`,
 
     /**
      * Address block below profile photo.
@@ -439,14 +446,18 @@ export const site = {
      * `heading` is used for the page title, your name, and home-page section
      * headings; `body` for everything else; `mono` for code.
      *
-     * These swap among the *bundled* self-hosted families (Newsreader,
-     * Inter Tight, IBM Plex Mono). To use a different family, install its
-     * Fontsource package and add the matching `@font-face` rules in
+     * These swap among the *bundled* self-hosted families (Instrument Serif,
+     * Schibsted Grotesk, IBM Plex Mono). To use a different family, install
+     * its Fontsource package and add the matching `@font-face` rules in
      * `src/styles/global.css` before naming it here.
+     *
+     * Note: Instrument Serif ships a single weight (400). If you swap in a
+     * multi-weight display serif you can raise the heading weights in
+     * `src/styles/_folio.css` (`.folio-name`, `.folio-pagetitle`).
      */
     font: {
-      heading: "'Newsreader', Georgia, 'Times New Roman', serif" as string,
-      body: "'Inter Tight', system-ui, -apple-system, sans-serif" as string,
+      heading: "'Instrument Serif', Georgia, 'Times New Roman', serif" as string,
+      body: "'Schibsted Grotesk', system-ui, -apple-system, sans-serif" as string,
       mono: "'IBM Plex Mono', ui-monospace, monospace" as string,
     },
   },

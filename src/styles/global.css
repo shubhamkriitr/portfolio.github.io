@@ -11,41 +11,43 @@
    If font loads within that window it swaps; otherwise fallback persists
    for the rest of the page load. Cached on subsequent visits = instant. */
 
-/* Newsreader Variable (display serif — name, page & article titles).
-   Editorial high-contrast serif; wght axis 200–800, upright + italic. */
+/* Instrument Serif (display serif — name, page & article titles).
+   High-contrast display face. Ships ONE weight (400) — never ask for a
+   heavier weight on it or the browser synthesises a smeared faux-bold.
+   Hierarchy comes from size, not weight. */
 @font-face {
-  font-family: 'Newsreader';
+  font-family: 'Instrument Serif';
   font-style: normal;
   font-display: fallback;
-  font-weight: 200 800;
-  src: url('@fontsource-variable/newsreader/files/newsreader-latin-wght-normal.woff2')
-    format('woff2-variations');
+  font-weight: 400;
+  src: url('@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2')
+    format('woff2');
 }
 @font-face {
-  font-family: 'Newsreader';
+  font-family: 'Instrument Serif';
   font-style: italic;
   font-display: fallback;
-  font-weight: 200 800;
-  src: url('@fontsource-variable/newsreader/files/newsreader-latin-wght-italic.woff2')
-    format('woff2-variations');
+  font-weight: 400;
+  src: url('@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2')
+    format('woff2');
 }
 
-/* Inter Tight Variable (neutral grotesk — body copy & UI).
-   Slightly narrow grotesk; wght axis 100–900, upright + italic. */
+/* Schibsted Grotesk Variable (editorial grotesk — body copy & UI).
+   Newspaper grotesk; wght axis 400–900, upright + italic. */
 @font-face {
-  font-family: 'Inter Tight';
+  font-family: 'Schibsted Grotesk';
   font-style: normal;
   font-display: fallback;
-  font-weight: 100 900;
-  src: url('@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2')
+  font-weight: 400 900;
+  src: url('@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2')
     format('woff2-variations');
 }
 @font-face {
-  font-family: 'Inter Tight';
+  font-family: 'Schibsted Grotesk';
   font-style: italic;
   font-display: fallback;
-  font-weight: 100 900;
-  src: url('@fontsource-variable/inter-tight/files/inter-tight-latin-wght-italic.woff2')
+  font-weight: 400 900;
+  src: url('@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-italic.woff2')
     format('woff2-variations');
 }
 
@@ -268,8 +270,8 @@
     margin-bottom: 1.5rem;
   }
   h1.post-title {
-    font-size: 2.1rem;
-    font-weight: 700;
+    font-size: 2.4rem;
+    font-weight: 400;
     letter-spacing: -0.01em;
     color: var(--global-text-color);
     font-family: var(--font-heading);

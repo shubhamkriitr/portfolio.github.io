@@ -20,29 +20,30 @@ import satori from 'satori';
 // Load fonts once at module level (build-time only — never runs in the browser).
 // Satori cannot read variable woff2, so these come from the *static* Fontsource
 // packages, not the @fontsource-variable ones the site's CSS uses.
-const sansRoot = resolve('node_modules/@fontsource/inter-tight/files');
-const serifRoot = resolve('node_modules/@fontsource/newsreader/files');
+const sansRoot = resolve('node_modules/@fontsource/schibsted-grotesk/files');
+const serifRoot = resolve('node_modules/@fontsource/instrument-serif/files');
 
 const FONTS = [
   {
-    name: 'Inter Tight',
-    data: readFileSync(resolve(sansRoot, 'inter-tight-latin-400-normal.woff'))
+    name: 'Schibsted Grotesk',
+    data: readFileSync(resolve(sansRoot, 'schibsted-grotesk-latin-400-normal.woff'))
       .buffer as ArrayBuffer,
     weight: 400 as const,
     style: 'normal' as const,
   },
   {
-    name: 'Inter Tight',
-    data: readFileSync(resolve(sansRoot, 'inter-tight-latin-600-normal.woff'))
+    name: 'Schibsted Grotesk',
+    data: readFileSync(resolve(sansRoot, 'schibsted-grotesk-latin-600-normal.woff'))
       .buffer as ArrayBuffer,
     weight: 600 as const,
     style: 'normal' as const,
   },
   {
-    name: 'Newsreader',
-    data: readFileSync(resolve(serifRoot, 'newsreader-latin-600-normal.woff'))
+    // Instrument Serif ships one weight — request 400 or satori falls back.
+    name: 'Instrument Serif',
+    data: readFileSync(resolve(serifRoot, 'instrument-serif-latin-400-normal.woff'))
       .buffer as ArrayBuffer,
-    weight: 600 as const,
+    weight: 400 as const,
     style: 'normal' as const,
   },
 ];
@@ -77,7 +78,7 @@ function ogCard(title: string, description: string | undefined, type: string) {
         width: W,
         height: H,
         backgroundColor: '#fafaf8',
-        fontFamily: 'Inter Tight',
+        fontFamily: 'Schibsted Grotesk',
         padding: '64px 80px',
         justifyContent: 'space-between',
       },
@@ -117,9 +118,9 @@ function ogCard(title: string, description: string | undefined, type: string) {
         'div',
         {
           style: {
-            fontFamily: 'Newsreader',
-            fontSize: title.length > 60 ? 54 : title.length > 40 ? 62 : 70,
-            fontWeight: 600,
+            fontFamily: 'Instrument Serif',
+            fontSize: title.length > 60 ? 58 : title.length > 40 ? 66 : 76,
+            fontWeight: 400,
             color: '#16161a',
             lineHeight: 1.1,
             letterSpacing: '-0.02em',

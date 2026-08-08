@@ -43,6 +43,9 @@ const avatarFallback = withBase('/assets/img/prof_pic.jpg');
           {(site.title as string) === 'blank' ? site.author.name : site.title}
         </h1>
         {site.author.subtitle && <p class="folio-role" set:html={site.author.subtitle} />}
+        {site.author.credentials && (
+          <p class="folio-credentials" set:html={site.author.credentials} />
+        )}
         <div class="folio-links">
           <SocialLinks size={17} />
         </div>

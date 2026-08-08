@@ -4,12 +4,13 @@
  */
 
 @theme {
-  --font-sans: 'Inter Tight', system-ui, -apple-system, sans-serif;
-  /* Inter Tight is already the narrow grotesk — condensed is an alias, not a 4th family. */
-  --font-condensed: 'Inter Tight', system-ui, 'Arial Narrow', sans-serif;
+  --font-sans: 'Schibsted Grotesk', system-ui, -apple-system, sans-serif;
+  /* One grotesk covers both roles — condensed is an alias, not a 4th family. */
+  --font-condensed: 'Schibsted Grotesk', system-ui, 'Arial Narrow', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
-  /* Serif for display headings (page titles / name). Overridden by site.theme.font.heading. */
-  --font-heading: 'Newsreader', Georgia, 'Times New Roman', serif;
+  /* Display serif (page titles / name). Overridden by site.theme.font.heading.
+     Instrument Serif is single-weight — see the @font-face note in global.css. */
+  --font-heading: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 }
 
 /* ─── Base typography ────────────────────────────────────────────────────── */
@@ -40,10 +41,13 @@ h6 {
 }
 
 /* Display headings (page & article titles) use the serif heading font.
-   Kept unlayered so it beats the layered `.post-title` rules in global.css. */
+   Kept unlayered so it beats the layered `.post-title` rules in global.css.
+   Weight 400 is deliberate: the display serif ships a single weight, and any
+   heavier request makes the browser synthesise a smeared faux-bold. */
 .post-title,
 .distill-title {
   font-family: var(--font-heading);
+  font-weight: 400;
 }
 
 /* Links */
