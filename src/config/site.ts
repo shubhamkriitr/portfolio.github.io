@@ -6,6 +6,8 @@
  * All configuration is fully typed — your editor will catch mistakes.
  */
 
+import { fonts } from './fonts';
+
 // ─── Navigation types (exported for use in Navbar.astro / SearchTrigger) ────
 
 /** A simple navigation link. */
@@ -446,19 +448,16 @@ export const site = {
      * `heading` is used for the page title, your name, and home-page section
      * headings; `body` for everything else; `mono` for code.
      *
-     * These swap among the *bundled* self-hosted families (Instrument Serif,
-     * Schibsted Grotesk, IBM Plex Mono). To use a different family, install
-     * its Fontsource package and add the matching `@font-face` rules in
-     * `src/styles/global.css` before naming it here.
-     *
-     * Note: Instrument Serif ships a single weight (400). If you swap in a
-     * multi-weight display serif you can raise the heading weights in
-     * `src/styles/_folio.css` (`.folio-name`, `.folio-pagetitle`).
+     * Sourced from `src/config/fonts.ts` — edit typefaces there, not here.
+     * That file also carries the display weight and the OG-image font paths,
+     * so a swap is one edit plus one `@import` in `src/styles/global.css`.
      */
     font: {
-      heading: "'Instrument Serif', Georgia, 'Times New Roman', serif" as string,
-      body: "'Schibsted Grotesk', system-ui, -apple-system, sans-serif" as string,
-      mono: "'IBM Plex Mono', ui-monospace, monospace" as string,
+      heading: fonts.display.stack as string,
+      body: fonts.body.stack as string,
+      mono: fonts.mono.stack as string,
+      /** Weight for display headings — see the "weight trap" note in fonts.ts. */
+      headingWeight: fonts.display.weight as number,
     },
   },
 } as const;

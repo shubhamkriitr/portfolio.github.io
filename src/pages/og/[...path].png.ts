@@ -10,6 +10,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+import { familyName, fonts } from '@config/fonts';
 import { site } from '@config/site';
 import { Resvg } from '@resvg/resvg-js';
 import type { APIContext, GetStaticPathsResult } from 'astro';
@@ -18,34 +19,25 @@ import React from 'react';
 import satori from 'satori';
 
 // Load fonts once at module level (build-time only — never runs in the browser).
-// Satori cannot read variable woff2, so these come from the *static* Fontsource
-// packages, not the @fontsource-variable ones the site's CSS uses.
-const sansRoot = resolve('node_modules/@fontsource/schibsted-grotesk/files');
-const serifRoot = resolve('node_modules/@fontsource/instrument-serif/files');
+// Everything here is derived from src/config/fonts.ts; nothing is hardcoded.
+// Satori cannot read variable woff2, so `og` points at *static* Fontsource
+// packages, not the @fontsource-variable ones the site's CSS imports.
+const DISPLAY_FAMILY = familyName(fonts.display.stack);
+const BODY_FAMILY = familyName(fonts.body.stack);
 
 const FONTS = [
-  {
-    name: 'Schibsted Grotesk',
-    data: readFileSync(resolve(sansRoot, 'schibsted-grotesk-latin-400-normal.woff'))
-      .buffer as ArrayBuffer,
-    weight: 400 as const,
+  ...fonts.body.og.map((f) => ({
+    name: BODY_FAMILY,
+    data: readFileSync(resolve(`node_modules/${f.pkg}/files`, f.file)).buffer as ArrayBuffer,
+    weight: f.weight,
     style: 'normal' as const,
-  },
-  {
-    name: 'Schibsted Grotesk',
-    data: readFileSync(resolve(sansRoot, 'schibsted-grotesk-latin-600-normal.woff'))
-      .buffer as ArrayBuffer,
-    weight: 600 as const,
+  })),
+  ...fonts.display.og.map((f) => ({
+    name: DISPLAY_FAMILY,
+    data: readFileSync(resolve(`node_modules/${f.pkg}/files`, f.file)).buffer as ArrayBuffer,
+    weight: f.weight,
     style: 'normal' as const,
-  },
-  {
-    // Instrument Serif ships one weight — request 400 or satori falls back.
-    name: 'Instrument Serif',
-    data: readFileSync(resolve(serifRoot, 'instrument-serif-latin-400-normal.woff'))
-      .buffer as ArrayBuffer,
-    weight: 400 as const,
-    style: 'normal' as const,
-  },
+  })),
 ];
 
 const W = 1200;
@@ -78,7 +70,7 @@ function ogCard(title: string, description: string | undefined, type: string) {
         width: W,
         height: H,
         backgroundColor: '#fafaf8',
-        fontFamily: 'Schibsted Grotesk',
+        fontFamily: BODY_FAMILY,
         padding: '64px 80px',
         justifyContent: 'space-between',
       },
@@ -118,9 +110,9 @@ function ogCard(title: string, description: string | undefined, type: string) {
         'div',
         {
           style: {
-            fontFamily: 'Instrument Serif',
+            fontFamily: DISPLAY_FAMILY,
             fontSize: title.length > 60 ? 58 : title.length > 40 ? 66 : 76,
-            fontWeight: 400,
+            fontWeight: fonts.display.weight,
             color: '#16161a',
             lineHeight: 1.1,
             letterSpacing: '-0.02em',

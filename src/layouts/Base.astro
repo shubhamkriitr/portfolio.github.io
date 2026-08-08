@@ -41,7 +41,12 @@ const ogImage = resolvedImage ? new URL(resolvedImage, site.url).toString() : un
 // On light mode the hover is a slightly darkened accent; on dark it stays the accent.
 const lightColor = site.theme.color.light === 'auto' ? null : site.theme.color.light;
 const darkColor = site.theme.color.dark === 'auto' ? null : site.theme.color.dark;
-const { heading: headingFont, body: bodyFont, mono: monoFont } = site.theme.font;
+const {
+  heading: headingFont,
+  body: bodyFont,
+  mono: monoFont,
+  headingWeight,
+} = site.theme.font;
 // `!important` is required: Astro injects the bundled CSS <link> AFTER this
 // inline <style>, so without it the _colors.css / @theme :root defaults would win.
 const themeOverrideStyle = [
@@ -51,7 +56,7 @@ const themeOverrideStyle = [
   darkColor
     ? `[data-theme='dark']{--global-theme-color:${darkColor} !important;--global-hover-color:${darkColor} !important;}`
     : '',
-  `:root{--font-sans:${bodyFont} !important;--font-heading:${headingFont} !important;--font-mono:${monoFont} !important;}`,
+  `:root{--font-sans:${bodyFont} !important;--font-heading:${headingFont} !important;--font-mono:${monoFont} !important;--font-heading-weight:${headingWeight} !important;}`,
 ]
   .filter(Boolean)
   .join('');

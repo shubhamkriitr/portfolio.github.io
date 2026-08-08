@@ -47,7 +47,7 @@ h6 {
 .post-title,
 .distill-title {
   font-family: var(--font-heading);
-  font-weight: 400;
+  font-weight: var(--font-heading-weight, 400);
 }
 
 /* Links */

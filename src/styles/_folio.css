@@ -2,13 +2,12 @@
    Folio design system — editorial Swiss primitives + type roles.
    Used by EVERY content page so the look stays consistent.
 
-   TYPE ROLES  (families configured in site.ts → theme.font):
-     • Serif  (--font-heading, Newsreader)   → identity & page titles
-                                                (name, .post-title)
-     • Sans   (--font-sans, Inter Tight)     → body copy, UI, entry titles
-     • Mono   (--font-mono, IBM Plex Mono)   → DATA & LABELS:
-                                                section labels, dates,
-                                                tags, indices, actions
+   TYPE ROLES  (families configured in src/config/fonts.ts):
+     • Display (--font-heading)  → identity & page titles (name, .post-title)
+                                   weight from --font-heading-weight
+     • Body    (--font-sans)     → body copy, UI, entry titles
+     • Mono    (--font-mono)     → DATA & LABELS: section labels, dates,
+                                   tags, indices, actions
 
    STRUCTURE
      The mono label rail (.folio-row → .folio-label + .folio-body) is the
@@ -54,9 +53,8 @@
 }
 .folio-pagetitle {
   font-family: var(--font-heading);
-  /* Single-weight display serif: 400 only, hierarchy from size. */
   font-size: clamp(2.3rem, 5vw, 3.1rem);
-  font-weight: 400;
+  font-weight: var(--font-heading-weight, 400);
   line-height: 1.06;
   letter-spacing: -0.012em;
   color: var(--global-text-color);
@@ -376,9 +374,8 @@ a.folio-entry-title:hover {
   margin: 0;
 }
 .folio-name {
-  /* Single-weight display serif: 400 only, hierarchy from size. */
   font-size: clamp(2.9rem, 7vw, 4.1rem);
-  font-weight: 400;
+  font-weight: var(--font-heading-weight, 400);
   line-height: 1;
   letter-spacing: -0.015em;
   margin: 0;

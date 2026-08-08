@@ -791,7 +791,37 @@ All theming is done through CSS custom properties defined in `src/styles/_colors
 }
 ```
 
-The easiest way to change the accent color is via `site.ts` (see §14 — Dark mode → Theme color). For other CSS variable overrides (background, text, borders, fonts, etc.), edit `src/styles/_colors.css` directly.
+The easiest way to change the accent color is via `site.ts` (see §14 — Dark mode → Theme color). For other CSS variable overrides (background, text, borders), edit `src/styles/_colors.css` directly.
+
+### Typefaces
+
+Fonts live in **`src/config/fonts.ts`** — that one file drives the CSS variables, the heading weights, and the fonts used in generated social-preview images.
+
+```ts
+export const fonts = {
+  display: {
+    stack: "'Instrument Serif', Georgia, serif", // name + page titles
+    weight: 400, // see "the weight trap" below
+    og: [...], // static files for OG images
+  },
+  body: { stack: "'Schibsted Grotesk', system-ui, sans-serif", og: [...] },
+  mono: { stack: "'IBM Plex Mono', ui-monospace, monospace" },
+};
+```
+
+To swap in a new family:
+
+1. `yarn add @fontsource-variable/<name>` (or `@fontsource/<name>`)
+2. Add one `@import` line near the top of `src/styles/global.css`
+3. Edit the entry in `fonts.ts`
+
+Step 2 can't be folded into the config: CSS `@import` must be statically analysable at build time.
+
+**The weight trap.** Some display serifs ship only one weight — Instrument Serif is one. Asking such a face for 600 or 700 makes the browser synthesise a smeared faux-bold. `display.weight` is exposed as `--font-heading-weight` and consumed by every display heading, so if you switch to a multi-weight serif, raise that single value and the whole site follows.
+
+**If a font silently doesn't apply**, you almost certainly edited `fonts.ts` but skipped the `@import` — the browser falls through to the next family in the stack rather than erroring.
+
+**OG images.** Satori can't read variable `woff2`, so `og` points at *static* `.woff` files. A variable package usually needs its static counterpart installed alongside it.
 
 ---
 
