@@ -7,9 +7,11 @@ cv:
   email: shubhamkumar.iitr@gmail.com
   website: https://shubham.ch
   summary: >-
-    M.Sc. Computer Science (ETH Zürich) working in machine learning and computer
-    vision, with research spanning medical image analysis, 3D vision, and
-    efficient deep learning.
+    Software and Machine Learning Engineer with an M.Sc. in Computer Science from
+    ETH Zürich and over four years of industry experience building and deploying
+    scalable software and intelligent systems. I combine full-stack software
+    engineering with applied AI — currently focused on computer vision and
+    vision-language models — to build robust, production-ready applications.
   social_networks:
     - network: GitHub
       username: shubhamkriitr
@@ -18,13 +20,34 @@ cv:
 
   sections:
     experience:
+      - company: Ethon
+        position: Machine Learning Data Engineer
+        location: Zürich, Switzerland
+        start_date: 2026
+        end_date: present
+        highlights:
+          - Working at the intersection of software engineering and applied research in computer vision and vision-language models.
+          - Designing and building scalable, event-driven systems for developing and evaluating machine-learning models at scale.
+
+      - company: Ucentrics AG
+        position: Machine Learning Engineer
+        location: Zürich, Switzerland
+        start_date: 2024-09
+        end_date: 2025-12
+        highlights:
+          - Built an automated ML training pipeline and a low-compute inference pipeline from scratch, enabling end-to-end model development and deployment for 3D overlay.
+          - Created a document layout analysis and LLM-based tool that converts technical manuals into digital workflows, digitizing 50-page documents in minutes.
+          - Enhanced the core software with a modular integration layer for seamless addition, replacement, and configuration of AI models powering real-time scene understanding and visual inspection.
+          - Built a synthetic data generation system producing five modalities (RGB, depth, segmentation, landmarks, 6-DoF pose) for CAD models, cutting labeling effort by 80%.
+
       - company: ETH Zürich — Product Development Group
         position: Research Assistant
         location: Zürich, Switzerland
         start_date: 2023-12
-        end_date: present
+        end_date: 2024-05
         highlights:
-          - Developing few-shot visual anomaly detection models for industrial component inspection.
+          - Engineered and deployed efficient image classification models optimized for real-time mobile inference, improving processing speed by 35%.
+          - Developed Unity/Android plugins enabling voice-driven AR interactions.
 
       - company: Disney Research | Studios
         position: Master's Thesis Student
@@ -32,23 +55,28 @@ cv:
         start_date: 2023-03
         end_date: 2023-09
         highlights:
-          - Developed an efficient transformer network for topology-independent shape modeling.
+          - Developed a transformer network with linear compute and memory complexity in the number of tokens, reducing 3D-hand shape reconstruction error by 10.3% while being 31.5% more computationally efficient.
+          - Built a tool for large-scale architecture search, experiment tracking, and reporting (500+ runs).
 
-      - company: Oracle India — Oracle Cloud AI Services (OCAS)
+      - company: Oracle Cloud AI Services
         position: Member of Technical Staff
         location: Bengaluru, India
         start_date: 2020-10
         end_date: 2021-09
         highlights:
-          - End-to-end experimentation with deep learning models for NLP, making them production ready and exposing them as cloud services via APIs.
+          - Developed, trained, and productionized deep-learning models for aspect-based sentiment analysis (F1 86.8%), exposing them as cloud services via APIs.
+          - Built a validation and benchmarking agent for registering datasets, tasks, and metrics to generate performance summaries for model selection.
+          - Created a template processor for synthetic text-data generation and an annotation pipeline, increasing high-quality in-house annotated data volume 4.5×.
 
-      - company: Oracle India — Oracle Applications Lab (OAL)
-        position: Software Developer
+      - company: Oracle Applications Lab
+        position: Software Engineer
         location: Bengaluru, India
         start_date: 2018-07
         end_date: 2020-09
         highlights:
-          - Developed cloud software solutions to streamline and optimize supply-chain processes for Oracle's hardware business.
+          - Designed and implemented a data-aggregation API for the supply-chain dashboard, improving support turnaround time by 30%.
+          - Implemented the backend and intent-resolution flow for a chatbot to query shipping details via Slack and Facebook Messenger.
+          - Built a web service for dynamic pricing of pre-installed software based on configurable rules, and maintained Jenkins CI/CD pipelines.
 
       - company: Technical University of Munich — Department of Computer Science
         position: Research Intern
@@ -62,14 +90,22 @@ cv:
       - institution: ETH Zürich
         area: Computer Science
         degree: M.Sc.
-        start_date: 2021
-        end_date: 2023
+        location: Zürich, Switzerland
+        start_date: 2021-09
+        end_date: 2024-06
+        highlights:
+          - 'Major: Machine Learning · Minor: Data Management · CGPA 5.5/6'
+          - 'Selected coursework: Big Data, Information Security, NLP for Law and Social Science, Advanced Machine Learning, Computational Intelligence'
 
       - institution: Indian Institute of Technology Roorkee
         area: Electrical Engineering
         degree: B.Tech.
-        start_date: 2014
-        end_date: 2018
+        location: Roorkee, India
+        start_date: 2014-07
+        end_date: 2018-05
+        highlights:
+          - 'CGPA 9.33/10'
+          - 'Selected coursework: Design and Analysis of Algorithms, Programming in C++, Operating Systems'
 
       - institution: Holy Mission Secondary School (CBSE)
         degree: Twelfth (Intermediate of Science)
@@ -100,3 +136,15 @@ cv:
         date: 2018
         journal: 'Deep Learning in Medical Image Analysis 2018, ML-CDS 2018 (LNCS vol. 11045, Springer)'
         url: https://link.springer.com/chapter/10.1007/978-3-030-00889-5_26
+
+    skills:
+      - label: Programming Languages
+        details: Python, C#, C++, Java, JavaScript
+      - label: Libraries & Frameworks
+        details: PyTorch, NumPy, scikit-learn, PyBind, pytest, PySpark, FastAPI, Flask, Spring Boot, NLTK, spaCy, Hugging Face, LangChain
+      - label: Tools & Technologies
+        details: Docker, Git, ONNX, Slurm, Jenkins, Grafana, PostgreSQL, Oracle
+      - label: AI
+        details: LLMs, MCP, Transformers, CNNs, VAEs, GANs, Normalizing Flows
+      - label: Certifications
+        details: Scaled Agile Framework (SAFe 4) Practitioner

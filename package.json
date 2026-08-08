@@ -31,6 +31,7 @@
     "@astrojs/partytown": "^2.1.7",
     "@astrojs/react": "^5.0.7",
     "@astrojs/rss": "^4.0.18",
+    "@fontsource/lora": "^5.2.8",
     "@fontsource/roboto": "^5.2.10",
     "@fontsource/roboto-condensed": "^5.2.8",
     "@fontsource/source-code-pro": "^5.2.7",

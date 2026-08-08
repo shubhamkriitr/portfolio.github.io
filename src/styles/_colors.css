@@ -42,10 +42,10 @@
 :root {
   color-scheme: light;
 
-  --global-bg-color: var(--color-white);
-  --global-code-bg-color: #f3f4f6;
-  --global-text-color: #1a1a1a;
-  --global-text-color-light: #6c757d;
+  --global-bg-color: #fafaf8;
+  --global-code-bg-color: #f1f0ec;
+  --global-text-color: #17171a;
+  --global-text-color-light: #6b6862;
   --global-theme-color: var(--color-purple);
   --global-hover-color: var(--color-purple-dark);
   --global-hover-text-color: var(--color-white);
@@ -55,8 +55,8 @@
   --global-footer-text-color: var(--color-grey-light);
   --global-footer-link-color: var(--color-white);
   --global-distill-app-color: var(--color-grey);
-  --global-divider-color: rgba(0, 0, 0, 0.1);
-  --global-card-bg-color: #f8f9fa;
+  --global-divider-color: rgba(20, 18, 16, 0.1);
+  --global-card-bg-color: #f4f2ec;
   --global-highlight-color: var(--color-red-dark);
   --global-back-to-top-bg-color: rgba(0, 0, 0, 0.4);
   --global-back-to-top-text-color: var(--color-white);

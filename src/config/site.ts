@@ -36,7 +36,7 @@ export const site = {
 
   /** Site description. Used in meta tags. */
   description:
-    'Shubham Kumar — M.Sc. Computer Science, ETH Zürich. Machine learning and computer vision research spanning medical imaging, 3D vision, and efficient deep learning.',
+    'Shubham Kumar — M.Sc. Computer Science, ETH Zürich. Software and machine learning engineer working in computer vision and vision-language models, building production-ready ML systems.',
 
   /** Language code for the site. */
   lang: 'en',
@@ -60,7 +60,7 @@ export const site = {
     subtitle: `M.Sc. Computer Science,
       <a href="https://inf.ethz.ch/" target="_blank" rel="noopener noreferrer">ETH Zürich</a>
       &nbsp;·&nbsp;
-      Research Assistant, Product Development Group`,
+      Machine Learning Data Engineer @ Ethon`,
 
     /**
      * Address block below profile photo.
@@ -131,7 +131,7 @@ export const site = {
      * Text shown in footer. HTML is supported.
      * Leave empty string to hide.
      */
-    text: `© Shubham Kumar. Built with
+    text: `Built with
       <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>
       and the
       <a href="https://github.com/dadangnh/as-folio" target="_blank" rel="noopener noreferrer">as-folio</a>
@@ -146,7 +146,7 @@ export const site = {
      * 'normal'  — sits at the natural bottom of page content (only visible when scrolled down)
      * 'hidden'  — footer is not rendered at all
      */
-    position: 'sticky' as 'sticky' | 'normal' | 'hidden',
+    position: 'normal' as 'sticky' | 'normal' | 'hidden',
   },
 
   // ─── CV page ───────────────────────────────────────────────────────────────
@@ -424,15 +424,32 @@ export const site = {
      * Set to 'auto' to use the built-in defaults (purple in light mode, cyan in dark mode).
      *
      * Example presets:
-     *   Purple (default): { light: '#b509ac', dark: '#2698ba' }
-     *   Blue:             { light: '#0076df', dark: '#68c0d9' }
-     *   Red:              { light: '#ff3636', dark: '#f29105' }
-     *   Green:            { light: '#009f06', dark: '#b7d12a' }
-     *   Orange:           { light: '#f29105', dark: '#efcc00' }
+     *   ETH blue (current): { light: '#215caf', dark: '#6ba4de' }
+     *   Purple (default):   { light: '#b509ac', dark: '#2698ba' }
+     *   Blue:               { light: '#0076df', dark: '#68c0d9' }
+     *   Red:                { light: '#ff3636', dark: '#f29105' }
+     *   Green:              { light: '#009f06', dark: '#b7d12a' }
+     *   Orange:             { light: '#f29105', dark: '#efcc00' }
      */
     color: {
-      light: 'auto' as string,
-      dark: 'auto' as string,
+      light: '#215caf' as string,
+      dark: '#6ba4de' as string,
+    },
+
+    /**
+     * Font families. Each value is a CSS `font-family` string.
+     * `heading` is used for the page title, your name, and home-page section
+     * headings; `body` for everything else; `mono` for code.
+     *
+     * These swap among the *bundled* self-hosted families (Lora, Roboto,
+     * Source Code Pro). To use a different family, install its Fontsource
+     * package and add the matching `@font-face` rules in `src/styles/global.css`
+     * before naming it here.
+     */
+    font: {
+      heading: "'Lora', Georgia, 'Times New Roman', serif" as string,
+      body: "'Roboto', system-ui, -apple-system, sans-serif" as string,
+      mono: "'Source Code Pro', ui-monospace, monospace" as string,
     },
   },
 } as const;

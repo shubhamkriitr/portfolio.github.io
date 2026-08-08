@@ -1,240 +1,428 @@
 ---
-import ProfilePhoto from '@components/about/ProfilePhoto.astro';
 import SocialLinks from '@components/SocialLinks.astro';
 import { site } from '@config/site';
 import Base from '@layouts/Base.astro';
+import { withBase } from '@utils/base';
 import { getAuthors, getBoolField, getTitle, getVenue, getYear, parseBibtex } from '@utils/bibtex';
+import type { RenderCV, RenderCVEntry } from '@utils/cv';
+import { formatDateRange } from '@utils/cv';
 import { getCollection } from 'astro:content';
+import yaml from 'js-yaml';
 
 import AboutContent from '../data/about.mdx';
+import cvRaw from '../data/cv.yml?raw';
 import bibRaw from '../data/papers.bib?raw';
-
-// Latest posts
-const allPosts = site.latestPosts.enabled
-  ? (await getCollection('posts'))
-      .filter((p) => !p.data.hidden)
-      .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-      .slice(0, site.latestPosts.limit)
-  : [];
 
 // Featured projects — top entries by importance (lower = shown first)
 const featuredProjects = (await getCollection('projects'))
   .sort((a, b) => (a.data.importance ?? 999) - (b.data.importance ?? 999))
   .slice(0, 3);
 
-const formatDate = (d: Date) =>
-  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-
 // Selected publications
 const selectedPapers = site.selectedPapers.enabled
   ? parseBibtex(bibRaw).filter((e) => getBoolField(e, 'selected'))
   : [];
+
+// Recent experience (top 4 from the CV)
+const rc = (yaml.load(cvRaw) as RenderCV)?.cv ?? null;
+const experience = ((rc?.sections?.experience ?? []) as RenderCVEntry[]).slice(0, 4);
+
+const avatar = withBase(site.author.avatar);
+const avatarFallback = withBase('/assets/img/prof_pic.jpg');
 ---
 
 <Base isHome={true}>
-  <div class="post page-container py-8">
-    <header class="post-header">
-      <h1
-        class="post-title"
-        style="font-family: var(--font-sans); color: var(--global-text-color);"
-      >
-        {(site.title as string) === 'blank' ? site.author.name : site.title}
-      </h1>
-      {
-        site.author.subtitle && (
-          <p
-            class="desc"
-            style="color: var(--global-text-color-light);"
-            set:html={site.author.subtitle}
-          />
-        )
-      }
-    </header>
-
-    <article>
-      <!-- Profile photo (floats right by default) -->
-      <ProfilePhoto align="right" />
-
-      <div class="clearfix">
-        <!-- Bio content from about.mdx -->
-        <div class="prose max-w-none">
-          <AboutContent />
+  <div class="folio">
+    <!-- ── Hero ─────────────────────────────────────────────── -->
+    <header class="hero">
+      <div class="hero-main">
+        {site.author.moreInfo && (
+          <p class="eyebrow"><span class="dot" set:html={site.author.moreInfo} /></p>
+        )}
+        <h1 class="post-title name">
+          {(site.title as string) === 'blank' ? site.author.name : site.title}
+        </h1>
+        {site.author.subtitle && (
+          <p class="role" set:html={site.author.subtitle} />
+        )}
+        <div class="hero-links">
+          <SocialLinks size={17} />
         </div>
       </div>
+      <div class="hero-photo">
+        <img
+          src={avatar}
+          alt={site.author.name}
+          width="128"
+          height="128"
+          loading="eager"
+          fetchpriority="high"
+          onerror={`this.src='${avatarFallback}'`}
+        />
+      </div>
+    </header>
 
-      <!-- Social icons -->
-      {
-        site.socials && (
-          <div class="social mt-6">
-            <div class="contact-icons">
-              <SocialLinks />
-            </div>
-          </div>
-        )
-      }
+    <!-- ── About ────────────────────────────────────────────── -->
+    <section class="row" id="about">
+      <p class="label">About</p>
+      <div class="body prose">
+        <AboutContent />
+      </div>
+    </section>
 
-      <!-- Latest posts -->
-      {
-        site.latestPosts.enabled && allPosts.length > 0 && (
-          <section class="mt-8">
-            <h2 style="color: var(--global-text-color); border-bottom: 1px solid var(--global-divider-color); padding-bottom: 0.3rem;">
-              <a href={`${site.base}/blog/`} style="color: inherit; text-decoration: none;">
-                latest posts
-              </a>
-            </h2>
-            <div class={site.latestPosts.scrollable ? 'scrollable-list' : ''}>
-              <table style="width: 100%; border-collapse: collapse;">
-                <tbody>
-                  {allPosts.map((post) => (
-                    <tr style="border-bottom: 1px solid var(--global-divider-color);">
-                      <td style="padding: 0.5rem 1rem 0.5rem 0; white-space: nowrap; vertical-align: top; color: var(--global-text-color-light); font-size: 0.8rem;">
-                        {formatDate(post.data.date)}
-                      </td>
-                      <td style="padding: 0.5rem 0; font-size: 0.9rem;">
-                        <a
-                          href={`${site.base}/blog/${post.id}/`}
-                          style="color: var(--global-theme-color); text-decoration: none;"
-                        >
-                          {post.data.title}
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        )
-      }
+    <!-- ── Experience ───────────────────────────────────────── -->
+    {experience.length > 0 && (
+      <section class="row" id="experience">
+        <p class="label">Experience</p>
+        <div class="body">
+          <ul class="stack">
+            {experience.map((e) => (
+              <li class="xp">
+                <div class="xp-head">
+                  <span class="xp-role">{e.position}</span>
+                  <span class="xp-when">{formatDateRange(e.start_date, e.end_date)}</span>
+                </div>
+                <span class="xp-org">{e.company}</span>
+              </li>
+            ))}
+          </ul>
+          <a class="more" href={`${site.base}/cv/`}>Full CV &rarr;</a>
+        </div>
+      </section>
+    )}
 
-      <!-- Featured projects -->
-      {
-        featuredProjects.length > 0 && (
-          <section class="mt-8">
-            <h2 style="color: var(--global-text-color); border-bottom: 1px solid var(--global-divider-color); padding-bottom: 0.3rem;">
-              <a href={`${site.base}/projects/`} style="color: inherit; text-decoration: none;">
-                featured projects
-              </a>
-            </h2>
-            <ol class="m-0 list-none p-0">
-              {featuredProjects.map((project) => (
-                <li class="mb-4 text-sm" style="line-height: 1.6;">
-                  {project.data.category && (
-                    <span class="badge-abbr mr-2">{project.data.category}</span>
+    <!-- ── Selected work ────────────────────────────────────── -->
+    {featuredProjects.length > 0 && (
+      <section class="row" id="work">
+        <p class="label">Selected&nbsp;Work</p>
+        <div class="body">
+          <ul class="stack">
+            {featuredProjects.map((project, i) => (
+              <li>
+                <a class="work" href={`${site.base}/projects/${project.id}/`}>
+                  <span class="idx">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="work-body">
+                    <span class="work-title">
+                      {project.data.title}
+                      {project.data.category && <span class="tag">{project.data.category}</span>}
+                    </span>
+                    {project.data.description && (
+                      <span class="work-desc">{project.data.description}</span>
+                    )}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a class="more" href={`${site.base}/projects/`}>All projects &rarr;</a>
+        </div>
+      </section>
+    )}
+
+    <!-- ── Publications ─────────────────────────────────────── -->
+    {site.selectedPapers.enabled && selectedPapers.length > 0 && (
+      <section class="row" id="publications">
+        <p class="label">Publications</p>
+        <div class="body">
+          <ul class="stack">
+            {selectedPapers.map((entry) => {
+              const title = getTitle(entry);
+              const url =
+                entry.fields.html ??
+                (entry.fields.doi ? `https://doi.org/${entry.fields.doi}` : '');
+              const venue = getVenue(entry);
+              const year = getYear(entry);
+              return (
+                <li class="pub">
+                  {url ? (
+                    <a class="pub-title" href={url} target="_blank" rel="noopener noreferrer">
+                      {title}
+                    </a>
+                  ) : (
+                    <span class="pub-title">{title}</span>
                   )}
-                  <a
-                    href={`${site.base}/projects/${project.id}/`}
-                    style="color: var(--global-text-color); font-weight: 600; text-decoration: none;"
-                  >
-                    {project.data.title}
-                  </a>
-                  {project.data.description && (
-                    <>
-                      <br />
-                      <span style="color: var(--global-text-color-light);">
-                        {project.data.description}
-                      </span>
-                    </>
-                  )}
+                  <span class="pub-meta">
+                    {getAuthors(entry)}
+                    {(venue || year) && <span class="pub-venue"> · {venue}{venue && year ? ', ' : ''}{year}</span>}
+                  </span>
                 </li>
-              ))}
-            </ol>
-            <p class="mt-2 text-sm">
-              <a
-                href={`${site.base}/projects/`}
-                style="color: var(--global-theme-color); text-decoration: none;"
-              >
-                All projects &rarr;
-              </a>
-            </p>
-          </section>
-        )
-      }
-
-      <!-- Selected publications -->
-      {
-        site.selectedPapers.enabled && selectedPapers.length > 0 && (
-          <section class="mt-8">
-            <h2 style="color: var(--global-text-color); border-bottom: 1px solid var(--global-divider-color); padding-bottom: 0.3rem;">
-              <a href={`${site.base}/publications/`} style="color: inherit; text-decoration: none;">
-                selected publications
-              </a>
-            </h2>
-            <ol class="m-0 list-none p-0">
-              {selectedPapers.map((entry) => {
-                const title = getTitle(entry);
-                const authors = getAuthors(entry);
-                const venue = getVenue(entry);
-                const year = getYear(entry);
-                const abbr = entry.fields.abbr;
-                const url =
-                  entry.fields.html ??
-                  (entry.fields.doi ? `https://doi.org/${entry.fields.doi}` : '');
-                const award = entry.fields.award;
-                return (
-                  <li class="mb-4 text-sm" style="line-height: 1.6;">
-                    {abbr && <span class="badge-abbr mr-2">{abbr}</span>}
-                    {url ? (
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style="color: var(--global-text-color); font-weight: 600; text-decoration: none;"
-                      >
-                        {title}
-                      </a>
-                    ) : (
-                      <strong style="color: var(--global-text-color);">{title}</strong>
-                    )}
-                    <br />
-                    <span style="color: var(--global-text-color-light);">{authors}</span>
-                    {(venue || year) && (
-                      <>
-                        {' · '}
-                        <em style="color: var(--global-text-color-light);">
-                          {venue}
-                          {venue && year ? ', ' : ''}
-                          {year || ''}
-                        </em>
-                      </>
-                    )}
-                    {award && (
-                      <span class="badge-abbr ml-2" style="background-color: #f59e0b;">
-                        {entry.fields.award_name ?? '🏆'}
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-            <p class="mt-2 text-sm">
-              <a
-                href={`${site.base}/publications/`}
-                style="color: var(--global-theme-color); text-decoration: none;"
-              >
-                Full publication list &rarr;
-              </a>
-            </p>
-          </section>
-        )
-      }
-    </article>
+              );
+            })}
+          </ul>
+          <a class="more" href={`${site.base}/publications/`}>All publications &rarr;</a>
+        </div>
+      </section>
+    )}
   </div>
 </Base>
 
 <style>
-  .clearfix::after {
+  /* ── Layout ───────────────────────────────────────────── */
+  .folio {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: clamp(3rem, 8vw, 5.5rem) 1.5rem 6rem;
+  }
+
+  /* Section = label rail + content */
+  .row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 2rem;
+    padding: 2.75rem 0;
+    border-top: 1px solid var(--global-divider-color);
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--global-text-color-light);
+    margin: 0.35rem 0 0;
+  }
+  .body {
+    min-width: 0;
+  }
+
+  /* ── Hero ─────────────────────────────────────────────── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2.5rem;
+    align-items: start;
+    padding-bottom: 2.75rem;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--global-text-color-light);
+    margin: 0 0 1.25rem;
+  }
+  .eyebrow .dot::before {
     content: '';
-    display: table;
-    clear: both;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--global-theme-color);
+    margin-right: 0.55rem;
+    vertical-align: middle;
   }
-  .post-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
+  .eyebrow :global(p) {
+    display: inline;
+    margin: 0;
   }
-  .desc {
+  .name {
+    font-size: clamp(2.5rem, 6vw, 3.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0;
+    color: var(--global-text-color);
+  }
+  .role {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--global-text-color-light);
+    margin: 1rem 0 0;
+    max-width: 34ch;
+  }
+  .role :global(a) {
+    color: var(--global-text-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+  .role :global(a:hover) {
+    border-color: var(--global-theme-color);
+    color: var(--global-theme-color);
+  }
+  .hero-links {
+    margin-top: 1.5rem;
+  }
+  .hero-photo img {
+    width: 128px;
+    height: 128px;
+    object-fit: cover;
+    border-radius: 8px;
+    filter: grayscale(1) contrast(1.03);
+    transition: filter 0.4s ease;
+  }
+  .hero-photo img:hover {
+    filter: grayscale(0);
+  }
+
+  /* ── About prose ──────────────────────────────────────── */
+  .prose {
     font-size: 1rem;
-    margin-bottom: 1rem;
+    line-height: 1.75;
+    color: var(--global-text-color);
+  }
+  .prose :global(p) {
+    margin: 0 0 1rem;
+  }
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .prose :global(a) {
+    color: var(--global-text-color);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--global-theme-color) 40%, transparent);
+    transition: border-color 0.15s ease;
+  }
+  .prose :global(a:hover) {
+    border-color: var(--global-theme-color);
+  }
+
+  /* ── Shared list ──────────────────────────────────────── */
+  .stack {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── Experience ───────────────────────────────────────── */
+  .xp {
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+  .xp:first-child {
+    padding-top: 0;
+  }
+  .xp-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .xp-role {
+    font-weight: 600;
+    color: var(--global-text-color);
+  }
+  .xp-when {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--global-text-color-light);
+    white-space: nowrap;
+  }
+  .xp-org {
+    font-size: 0.9rem;
+    color: var(--global-text-color-light);
+  }
+
+  /* ── Selected work ────────────────────────────────────── */
+  .work {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--global-divider-color);
+    text-decoration: none;
+    color: inherit;
+  }
+  li:first-child .work {
+    padding-top: 0;
+  }
+  .idx {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--global-text-color-light);
+    padding-top: 0.28rem;
+  }
+  .work-body {
+    display: block;
+  }
+  .work-title {
+    display: block;
+    font-weight: 600;
+    color: var(--global-text-color);
+    transition: color 0.15s ease;
+  }
+  .work:hover .work-title {
+    color: var(--global-theme-color);
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--global-text-color-light);
+    border: 1px solid var(--global-divider-color);
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+    margin-left: 0.55rem;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .work-desc {
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--global-text-color-light);
+    margin-top: 0.3rem;
+  }
+
+  /* ── Publications ─────────────────────────────────────── */
+  .pub {
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+  .pub:first-child {
+    padding-top: 0;
+  }
+  .pub-title {
+    display: block;
+    font-weight: 600;
+    color: var(--global-text-color);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  a.pub-title:hover {
+    color: var(--global-theme-color);
+  }
+  .pub-meta {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--global-text-color-light);
+    margin-top: 0.2rem;
+  }
+
+  /* ── "More" links ─────────────────────────────────────── */
+  .more {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--global-theme-color);
+    text-decoration: none;
+  }
+  .more:hover {
+    color: var(--global-hover-color);
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .hero-photo {
+      order: -1;
+    }
+    .row {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      padding: 2.25rem 0;
+    }
+    .label {
+      margin-top: 0;
+    }
   }
 </style>

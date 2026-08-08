@@ -7,6 +7,8 @@
   --font-sans: 'Roboto', system-ui, -apple-system, sans-serif;
   --font-condensed: 'Roboto Condensed', 'Arial Narrow', sans-serif;
   --font-mono: 'Source Code Pro', 'Roboto Mono', 'Fira Code', ui-monospace, monospace;
+  /* Serif for display headings (page titles / name). Overridden by site.theme.font.heading. */
+  --font-heading: 'Lora', Georgia, 'Times New Roman', serif;
 }
 
 /* ─── Base typography ────────────────────────────────────────────────────── */
@@ -34,6 +36,13 @@ h6 {
   font-family: var(--font-sans);
   font-weight: 700;
   scroll-margin-top: 66px; /* offset for fixed navbar */
+}
+
+/* Display headings (page & article titles) use the serif heading font.
+   Kept unlayered so it beats the layered `.post-title` rules in global.css. */
+.post-title,
+.distill-title {
+  font-family: var(--font-heading);
 }
 
 /* Links */

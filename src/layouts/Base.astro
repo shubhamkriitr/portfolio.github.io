@@ -36,16 +36,22 @@ const resolvedImage = image?.startsWith('/')
   : image;
 const ogImage = resolvedImage ? new URL(resolvedImage, site.url).toString() : undefined;
 
-// Theme color override — only injected when site.theme.color is not 'auto'
+// Theme overrides driven from site.theme (single source of truth for accent + fonts).
+// Color: injected only when not 'auto' (else _colors.css defaults apply).
+// On light mode the hover is a slightly darkened accent; on dark it stays the accent.
 const lightColor = site.theme.color.light === 'auto' ? null : site.theme.color.light;
 const darkColor = site.theme.color.dark === 'auto' ? null : site.theme.color.dark;
-const colorOverrideStyle = [
+const { heading: headingFont, body: bodyFont, mono: monoFont } = site.theme.font;
+// `!important` is required: Astro injects the bundled CSS <link> AFTER this
+// inline <style>, so without it the _colors.css / @theme :root defaults would win.
+const themeOverrideStyle = [
   lightColor
-    ? `:root,[data-theme='light']{--global-theme-color:${lightColor};--global-hover-color:${lightColor};}`
+    ? `:root,[data-theme='light']{--global-theme-color:${lightColor} !important;--global-hover-color:color-mix(in srgb,${lightColor} 82%,#000) !important;}`
     : '',
   darkColor
-    ? `[data-theme='dark']{--global-theme-color:${darkColor};--global-hover-color:${darkColor};}`
+    ? `[data-theme='dark']{--global-theme-color:${darkColor} !important;--global-hover-color:${darkColor} !important;}`
     : '',
+  `:root{--font-sans:${bodyFont} !important;--font-heading:${headingFont} !important;--font-mono:${monoFont} !important;}`,
 ]
   .filter(Boolean)
   .join('');
@@ -84,8 +90,8 @@ const personJsonLd = isHome ? JSON.stringify({
 
     <!-- KaTeX CSS is bundled via global.css (@import 'katex/dist/katex.min.css') -->
 
-    <!-- Theme color override (from site.theme.color — 'auto' means use _colors.css defaults) -->
-    {colorOverrideStyle && <Fragment set:html={`<style>${colorOverrideStyle}</style>`} />}
+    <!-- Theme override (accent + fonts, from site.theme — single source of truth) -->
+    {themeOverrideStyle && <Fragment set:html={`<style>${themeOverrideStyle}</style>`} />}
 
     <!-- Open Graph + Twitter Card -->
     {

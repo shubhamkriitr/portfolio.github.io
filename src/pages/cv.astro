@@ -187,6 +187,7 @@ if (format === 'rendercv' && rc) {
                         subtitle={[e.authors?.join(', '), e.journal].filter(Boolean).join(' — ')}
                         dates={formatCVDate(e.date)}
                         url={e.doi ? `https://doi.org/${e.doi}` : e.url}
+                        mutedSubtitle
                       />
                     ))}
                   </ul>

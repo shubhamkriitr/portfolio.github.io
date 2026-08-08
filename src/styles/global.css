@@ -78,6 +78,22 @@
   src: url('@fontsource/source-code-pro/files/source-code-pro-latin-600-normal.woff2')
     format('woff2');
 }
+/* Lora 600 (serif — headings) */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-display: fallback;
+  font-weight: 600;
+  src: url('@fontsource/lora/files/lora-latin-600-normal.woff2') format('woff2');
+}
+/* Lora 700 (serif — headings) */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-display: fallback;
+  font-weight: 700;
+  src: url('@fontsource/lora/files/lora-latin-700-normal.woff2') format('woff2');
+}
 
 /* Configure dark: variant to use data-theme attribute (matches Base.astro) */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -392,10 +408,11 @@
     margin-bottom: 1.5rem;
   }
   h1.post-title {
-    font-size: 2rem;
+    font-size: 2.1rem;
     font-weight: 700;
+    letter-spacing: -0.01em;
     color: var(--global-text-color);
-    font-family: var(--font-sans);
+    font-family: var(--font-heading);
   }
 
   /* ─── Profile (matches al-folio .profile) ────────────────────────── */
@@ -953,71 +970,107 @@
 
   /* ─── CV card layout (matches al-folio _cv.scss) ─────────────────── */
   .cv .card {
-    border: 1px solid var(--global-divider-color);
-    border-radius: 4px;
-    background: var(--global-card-bg-color);
-    margin-top: 1rem;
-    padding: 1rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    margin-top: 2.25rem;
+    padding: 0;
   }
   .cv .card-title {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--global-text-color);
-    margin-bottom: 0.75rem;
-  }
-  .date-column {
-    text-align: center;
-    padding-right: 0.5rem;
-  }
-  .date-column .badge-date {
-    display: inline-block;
-    background-color: var(--global-theme-color);
-    color: #fff;
-    padding: 0.2em 0.5em;
-    border-radius: 3px;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    color: var(--global-theme-color);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid color-mix(in srgb, var(--global-theme-color) 35%, transparent);
+  }
+
+  /* Two-column entry: date/location meta + body */
+  .cv-entry-grid {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: 1rem;
+  }
+  .cv-entry-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding-top: 0.15rem;
+  }
+  .cv .badge-date {
+    display: inline-block;
+    background-color: color-mix(in srgb, var(--global-theme-color) 12%, transparent);
+    color: var(--global-theme-color);
+    border: 1px solid color-mix(in srgb, var(--global-theme-color) 28%, transparent);
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.2;
     white-space: nowrap;
   }
-  .date-column .location {
-    font-size: 0.7rem;
-    white-space: nowrap;
+  .cv-entry-location {
+    font-size: 0.72rem;
+    line-height: 1.3;
     color: var(--global-text-color-light);
-    margin-top: 0.25rem;
   }
-  .cv .list-group-item {
-    padding: 0.75rem 0;
+  .cv .list-group-item.cv-entry {
+    padding: 1rem 0;
     border: 0;
     border-bottom: 1px solid var(--global-divider-color);
     background: transparent;
   }
-  .cv .list-group-item:last-child {
-    border-bottom: 0;
+  .cv .list-group-item.cv-entry:first-child {
+    padding-top: 0.25rem;
   }
-  .cv .entry-title {
+  .cv .list-group-item.cv-entry:last-child {
+    border-bottom: 0;
+    padding-bottom: 0.25rem;
+  }
+  .cv-entry-body .title {
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
+    margin-bottom: 0.1rem;
     color: var(--global-text-color);
   }
-  .cv .entry-institution {
+  .cv-entry-subtitle {
+    color: var(--global-theme-color);
     font-size: 0.9rem;
-    color: var(--global-text-color-light);
+    font-weight: 500;
+    margin-bottom: 0.35rem;
   }
-  .cv .entry-summary {
-    font-size: 0.875rem;
-    font-style: italic;
+  .cv-entry-subtitle.muted {
     color: var(--global-text-color-light);
-    margin-top: 0.25rem;
+    font-weight: 400;
   }
   .cv ul.items {
-    padding-left: 1.5rem;
-    margin-top: 0.25rem;
+    padding-left: 1.1rem;
+    margin-top: 0.35rem;
+    margin-bottom: 0;
     font-size: 0.875rem;
+    line-height: 1.5;
     color: var(--global-text-color);
   }
   .cv ul.items li {
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.25rem;
+  }
+  .cv ul.items li::marker {
+    color: var(--global-text-color-light);
+  }
+
+  @media (max-width: 576px) {
+    .cv-entry-grid {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+    }
+    .cv-entry-meta {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.6rem;
+    }
   }
   .btncv {
     color: var(--global-text-color) !important;
