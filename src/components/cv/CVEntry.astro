@@ -2,53 +2,45 @@
 interface Props {
   /** Main title line (job title, degree, paper title). */
   title: string;
-  /** Secondary line (institution, company, journal). */
+  /** Secondary line (institution, company, journal, authors). */
   subtitle?: string;
-  /** Location string — shown below the date badge. */
+  /** Location string — appended to the secondary line. */
   location?: string;
   /** Date range or single date string (already formatted). */
   dates?: string;
-  /** Bullet points. */
+  /** Bullet points (may contain HTML). */
   highlights?: string[];
   /** URL to make the title a link. */
   url?: string;
-  /** Render the subtitle in muted text rather than the accent color (e.g. author lists). */
-  mutedSubtitle?: boolean;
 }
 
-const { title, subtitle, location, dates, highlights = [], url, mutedSubtitle = false } = Astro.props;
+const { title, subtitle, location, dates, highlights = [], url } = Astro.props;
+const sub = [subtitle, location].filter(Boolean).join(' · ');
 ---
 
-<li class="list-group-item cv-entry">
-  <div class="cv-entry-grid">
-    <div class="cv-entry-meta">
-      {dates && <span class="badge-date">{dates}</span>}
-      {location && <span class="cv-entry-location">{location}</span>}
-    </div>
-    <div class="cv-entry-body">
-      {
-        url ? (
-          <h6 class="title">
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              {title}
-            </a>
-          </h6>
-        ) : (
-          <h6 class="title">{title}</h6>
-        )
-      }
-      {subtitle && <div class:list={['cv-entry-subtitle', { muted: mutedSubtitle }]}>{subtitle}</div>}
-      {
-        highlights.length > 0 && (
-          <ul class="items">
-            {highlights.map((h) => (
-              <li>
-                <span class="item" set:html={h} />
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </div>
+<li class="folio-entry">
+  <div class="folio-entry-head">
+    {
+      url ? (
+        <a class="folio-entry-title" href={url} target="_blank" rel="noopener noreferrer">
+          {title}
+        </a>
+      ) : (
+        <span class="folio-entry-title">{title}</span>
+      )
+    }
+    {dates && <span class="folio-date">{dates}</span>}
   </div>
+  {sub && <span class="folio-entry-sub">{sub}</span>}
+  {
+    highlights.length > 0 && (
+      <ul class="folio-bullets">
+        {highlights.map((h) => (
+          <li>
+            <span set:html={h} />
+          </li>
+        ))}
+      </ul>
+    )
+  }
 </li>

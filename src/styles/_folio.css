@@ -1,0 +1,298 @@
+/* ============================================================
+   Folio design system — shared "polished" primitives + type roles.
+   Used by every content page so the look stays consistent.
+
+   TYPE ROLES  (families configured in site.ts → theme.font):
+     • Serif  (--font-heading, Lora)         → identity & page titles
+                                                (name, .post-title)
+     • Sans   (--font-sans, Roboto)          → body copy, UI, entry titles
+     • Mono   (--font-mono, Source Code Pro) → DATA & LABELS:
+                                                section labels, dates,
+                                                tags, indices, meta links
+   Kept unlayered (imported after _typography.css) so these win over the
+   layered rules in global.css's @layer utilities.
+   ============================================================ */
+
+/* ── Container ─────────────────────────────────────────────── */
+.folio {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 5.5rem) 1.5rem 6rem;
+}
+
+/* ── Section = mono label rail + content ───────────────────── */
+.folio-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 2rem;
+  padding: 2.75rem 0;
+  border-top: 1px solid var(--global-divider-color);
+}
+.folio-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--global-text-color-light);
+  margin: 0.35rem 0 0;
+}
+.folio-body {
+  min-width: 0;
+}
+
+/* ── Body prose ────────────────────────────────────────────── */
+.folio-prose {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--global-text-color);
+}
+.folio-prose :where(p) {
+  margin: 0 0 1rem;
+}
+.folio-prose :where(p:last-child) {
+  margin-bottom: 0;
+}
+.folio-prose :where(a) {
+  color: var(--global-text-color);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--global-theme-color) 40%, transparent);
+  transition: border-color 0.15s ease;
+}
+.folio-prose :where(a:hover) {
+  border-color: var(--global-theme-color);
+}
+
+/* ── Hairline lists + entries ──────────────────────────────── */
+.folio-stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.folio-entry {
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--global-divider-color);
+}
+.folio-stack > li:first-child .folio-entry,
+.folio-entry:first-child {
+  padding-top: 0;
+}
+.folio-entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.folio-entry-title {
+  font-weight: 600;
+  color: var(--global-text-color);
+}
+a.folio-entry-title {
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+a.folio-entry-title:hover {
+  color: var(--global-theme-color);
+}
+/* Mono metadata: dates, ranges, numeric data */
+.folio-date {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--global-text-color-light);
+  white-space: nowrap;
+  flex: none;
+}
+/* Sans secondary line: company, institution, location */
+.folio-entry-sub {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--global-text-color-light);
+  margin-top: 0.1rem;
+}
+/* Sans secondary meta: authors · venue */
+.folio-entry-meta {
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--global-text-color-light);
+  margin-top: 0.2rem;
+}
+.folio-bullets {
+  margin: 0.55rem 0 0;
+  padding-left: 1.05rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--global-text-color);
+}
+.folio-bullets li {
+  margin-bottom: 0.25rem;
+}
+.folio-bullets li::marker {
+  color: var(--global-text-color-light);
+}
+
+/* ── Tags / indices (mono) ─────────────────────────────────── */
+.folio-tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--global-text-color-light);
+  border: 1px solid var(--global-divider-color);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  margin-left: 0.55rem;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.folio-idx {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--global-text-color-light);
+}
+
+/* ── Numbered "work" link rows ─────────────────────────────── */
+.folio-worklink {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--global-divider-color);
+  text-decoration: none;
+  color: inherit;
+}
+.folio-stack > li:first-child .folio-worklink {
+  padding-top: 0;
+}
+.folio-worklink .folio-idx {
+  padding-top: 0.28rem;
+}
+.folio-work-title {
+  display: block;
+  font-weight: 600;
+  color: var(--global-text-color);
+  transition: color 0.15s ease;
+}
+.folio-worklink:hover .folio-work-title {
+  color: var(--global-theme-color);
+}
+.folio-work-desc {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--global-text-color-light);
+  margin-top: 0.3rem;
+}
+
+/* ── "More →" links (mono) ─────────────────────────────────── */
+.folio-more {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--global-theme-color);
+  text-decoration: none;
+}
+.folio-more:hover {
+  color: var(--global-hover-color);
+}
+
+/* ── Hero (home) ───────────────────────────────────────────── */
+.folio-hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2.5rem;
+  align-items: start;
+  padding-bottom: 2.75rem;
+}
+.folio-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--global-text-color-light);
+  margin: 0 0 1.25rem;
+}
+.folio-eyebrow .dot::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--global-theme-color);
+  margin-right: 0.55rem;
+  vertical-align: middle;
+}
+.folio-eyebrow :where(p) {
+  display: inline;
+  margin: 0;
+}
+.folio-name {
+  font-size: clamp(2.5rem, 6vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 0;
+  color: var(--global-text-color);
+}
+.folio-role {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--global-text-color-light);
+  margin: 1rem 0 0;
+  max-width: 34ch;
+}
+.folio-role :where(a) {
+  color: var(--global-text-color);
+  text-decoration: none;
+  border-bottom: 1px solid var(--global-divider-color);
+}
+.folio-role :where(a:hover) {
+  border-color: var(--global-theme-color);
+  color: var(--global-theme-color);
+}
+.folio-links {
+  margin-top: 1.5rem;
+}
+.folio-photo img {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 8px;
+  filter: grayscale(1) contrast(1.03);
+  transition: filter 0.4s ease;
+}
+.folio-photo img:hover {
+  filter: grayscale(0);
+}
+
+/* ── Page title (serif, from .post-title) + PDF link ───────── */
+.folio-pagehead {
+  padding-bottom: 0.5rem;
+}
+.folio-pagehead .post-title {
+  text-transform: none;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .folio-hero {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .folio-photo {
+    order: -1;
+  }
+  .folio-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 2.25rem 0;
+  }
+  .folio-label {
+    margin-top: 0;
+  }
+}

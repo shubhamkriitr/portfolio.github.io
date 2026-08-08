@@ -8,9 +8,9 @@ const { title, id } = Astro.props;
 ---
 
 <a class="anchor" id={id}></a>
-<div class="card mt-3 p-3">
-  <h3 class="card-title font-weight-medium">{title}</h3>
-  <div>
+<section class="folio-row">
+  <p class="folio-label" set:html={title}></p>
+  <div class="folio-body">
     <slot />
   </div>
-</div>
+</section>

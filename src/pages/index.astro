@@ -34,22 +34,20 @@ const avatarFallback = withBase('/assets/img/prof_pic.jpg');
 <Base isHome={true}>
   <div class="folio">
     <!-- ── Hero ─────────────────────────────────────────────── -->
-    <header class="hero">
-      <div class="hero-main">
+    <header class="folio-hero">
+      <div class="folio-hero-main">
         {site.author.moreInfo && (
-          <p class="eyebrow"><span class="dot" set:html={site.author.moreInfo} /></p>
+          <p class="folio-eyebrow"><span class="dot" set:html={site.author.moreInfo} /></p>
         )}
-        <h1 class="post-title name">
+        <h1 class="post-title folio-name">
           {(site.title as string) === 'blank' ? site.author.name : site.title}
         </h1>
-        {site.author.subtitle && (
-          <p class="role" set:html={site.author.subtitle} />
-        )}
-        <div class="hero-links">
+        {site.author.subtitle && <p class="folio-role" set:html={site.author.subtitle} />}
+        <div class="folio-links">
           <SocialLinks size={17} />
         </div>
       </div>
-      <div class="hero-photo">
+      <div class="folio-photo">
         <img
           src={avatar}
           alt={site.author.name}
@@ -63,68 +61,68 @@ const avatarFallback = withBase('/assets/img/prof_pic.jpg');
     </header>
 
     <!-- ── About ────────────────────────────────────────────── -->
-    <section class="row" id="about">
-      <p class="label">About</p>
-      <div class="body prose">
+    <section class="folio-row" id="about">
+      <p class="folio-label">About</p>
+      <div class="folio-body folio-prose">
         <AboutContent />
       </div>
     </section>
 
     <!-- ── Experience ───────────────────────────────────────── -->
     {experience.length > 0 && (
-      <section class="row" id="experience">
-        <p class="label">Experience</p>
-        <div class="body">
-          <ul class="stack">
+      <section class="folio-row" id="experience">
+        <p class="folio-label">Experience</p>
+        <div class="folio-body">
+          <ul class="folio-stack">
             {experience.map((e) => (
-              <li class="xp">
-                <div class="xp-head">
-                  <span class="xp-role">{e.position}</span>
-                  <span class="xp-when">{formatDateRange(e.start_date, e.end_date)}</span>
+              <li class="folio-entry">
+                <div class="folio-entry-head">
+                  <span class="folio-entry-title">{e.position}</span>
+                  <span class="folio-date">{formatDateRange(e.start_date, e.end_date)}</span>
                 </div>
-                <span class="xp-org">{e.company}</span>
+                <span class="folio-entry-sub">{e.company}</span>
               </li>
             ))}
           </ul>
-          <a class="more" href={`${site.base}/cv/`}>Full CV &rarr;</a>
+          <a class="folio-more" href={`${site.base}/cv/`}>Full CV &rarr;</a>
         </div>
       </section>
     )}
 
     <!-- ── Selected work ────────────────────────────────────── -->
     {featuredProjects.length > 0 && (
-      <section class="row" id="work">
-        <p class="label">Selected&nbsp;Work</p>
-        <div class="body">
-          <ul class="stack">
+      <section class="folio-row" id="work">
+        <p class="folio-label">Selected&nbsp;Work</p>
+        <div class="folio-body">
+          <ul class="folio-stack">
             {featuredProjects.map((project, i) => (
               <li>
-                <a class="work" href={`${site.base}/projects/${project.id}/`}>
-                  <span class="idx">{String(i + 1).padStart(2, '0')}</span>
-                  <span class="work-body">
-                    <span class="work-title">
+                <a class="folio-worklink" href={`${site.base}/projects/${project.id}/`}>
+                  <span class="folio-idx">{String(i + 1).padStart(2, '0')}</span>
+                  <span>
+                    <span class="folio-work-title">
                       {project.data.title}
-                      {project.data.category && <span class="tag">{project.data.category}</span>}
+                      {project.data.category && <span class="folio-tag">{project.data.category}</span>}
                     </span>
                     {project.data.description && (
-                      <span class="work-desc">{project.data.description}</span>
+                      <span class="folio-work-desc">{project.data.description}</span>
                     )}
                   </span>
                 </a>
               </li>
             ))}
           </ul>
-          <a class="more" href={`${site.base}/projects/`}>All projects &rarr;</a>
+          <a class="folio-more" href={`${site.base}/projects/`}>All projects &rarr;</a>
         </div>
       </section>
     )}
 
     <!-- ── Publications ─────────────────────────────────────── -->
     {site.selectedPapers.enabled && selectedPapers.length > 0 && (
-      <section class="row" id="publications">
-        <p class="label">Publications</p>
-        <div class="body">
-          <ul class="stack">
+      <section class="folio-row" id="publications">
+        <p class="folio-label">Publications</p>
+        <div class="folio-body">
+          <ul class="folio-stack">
             {selectedPapers.map((entry) => {
               const title = getTitle(entry);
               const url =
@@ -133,296 +131,25 @@ const avatarFallback = withBase('/assets/img/prof_pic.jpg');
               const venue = getVenue(entry);
               const year = getYear(entry);
               return (
-                <li class="pub">
+                <li class="folio-entry">
                   {url ? (
-                    <a class="pub-title" href={url} target="_blank" rel="noopener noreferrer">
+                    <a class="folio-entry-title" href={url} target="_blank" rel="noopener noreferrer">
                       {title}
                     </a>
                   ) : (
-                    <span class="pub-title">{title}</span>
+                    <span class="folio-entry-title">{title}</span>
                   )}
-                  <span class="pub-meta">
+                  <span class="folio-entry-meta">
                     {getAuthors(entry)}
-                    {(venue || year) && <span class="pub-venue"> · {venue}{venue && year ? ', ' : ''}{year}</span>}
+                    {(venue || year) && <span> · {venue}{venue && year ? ', ' : ''}{year}</span>}
                   </span>
                 </li>
               );
             })}
           </ul>
-          <a class="more" href={`${site.base}/publications/`}>All publications &rarr;</a>
+          <a class="folio-more" href={`${site.base}/publications/`}>All publications &rarr;</a>
         </div>
       </section>
     )}
   </div>
 </Base>
-
-<style>
-  /* ── Layout ───────────────────────────────────────────── */
-  .folio {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: clamp(3rem, 8vw, 5.5rem) 1.5rem 6rem;
-  }
-
-  /* Section = label rail + content */
-  .row {
-    display: grid;
-    grid-template-columns: 130px 1fr;
-    gap: 2rem;
-    padding: 2.75rem 0;
-    border-top: 1px solid var(--global-divider-color);
-  }
-  .label {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--global-text-color-light);
-    margin: 0.35rem 0 0;
-  }
-  .body {
-    min-width: 0;
-  }
-
-  /* ── Hero ─────────────────────────────────────────────── */
-  .hero {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 2.5rem;
-    align-items: start;
-    padding-bottom: 2.75rem;
-  }
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--global-text-color-light);
-    margin: 0 0 1.25rem;
-  }
-  .eyebrow .dot::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--global-theme-color);
-    margin-right: 0.55rem;
-    vertical-align: middle;
-  }
-  .eyebrow :global(p) {
-    display: inline;
-    margin: 0;
-  }
-  .name {
-    font-size: clamp(2.5rem, 6vw, 3.4rem);
-    line-height: 1.02;
-    letter-spacing: -0.025em;
-    margin: 0;
-    color: var(--global-text-color);
-  }
-  .role {
-    font-size: 1.05rem;
-    line-height: 1.55;
-    color: var(--global-text-color-light);
-    margin: 1rem 0 0;
-    max-width: 34ch;
-  }
-  .role :global(a) {
-    color: var(--global-text-color);
-    text-decoration: none;
-    border-bottom: 1px solid var(--global-divider-color);
-  }
-  .role :global(a:hover) {
-    border-color: var(--global-theme-color);
-    color: var(--global-theme-color);
-  }
-  .hero-links {
-    margin-top: 1.5rem;
-  }
-  .hero-photo img {
-    width: 128px;
-    height: 128px;
-    object-fit: cover;
-    border-radius: 8px;
-    filter: grayscale(1) contrast(1.03);
-    transition: filter 0.4s ease;
-  }
-  .hero-photo img:hover {
-    filter: grayscale(0);
-  }
-
-  /* ── About prose ──────────────────────────────────────── */
-  .prose {
-    font-size: 1rem;
-    line-height: 1.75;
-    color: var(--global-text-color);
-  }
-  .prose :global(p) {
-    margin: 0 0 1rem;
-  }
-  .prose :global(p:last-child) {
-    margin-bottom: 0;
-  }
-  .prose :global(a) {
-    color: var(--global-text-color);
-    text-decoration: none;
-    border-bottom: 1px solid color-mix(in srgb, var(--global-theme-color) 40%, transparent);
-    transition: border-color 0.15s ease;
-  }
-  .prose :global(a:hover) {
-    border-color: var(--global-theme-color);
-  }
-
-  /* ── Shared list ──────────────────────────────────────── */
-  .stack {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* ── Experience ───────────────────────────────────────── */
-  .xp {
-    padding: 0.95rem 0;
-    border-bottom: 1px solid var(--global-divider-color);
-  }
-  .xp:first-child {
-    padding-top: 0;
-  }
-  .xp-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
-  }
-  .xp-role {
-    font-weight: 600;
-    color: var(--global-text-color);
-  }
-  .xp-when {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    color: var(--global-text-color-light);
-    white-space: nowrap;
-  }
-  .xp-org {
-    font-size: 0.9rem;
-    color: var(--global-text-color-light);
-  }
-
-  /* ── Selected work ────────────────────────────────────── */
-  .work {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--global-divider-color);
-    text-decoration: none;
-    color: inherit;
-  }
-  li:first-child .work {
-    padding-top: 0;
-  }
-  .idx {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--global-text-color-light);
-    padding-top: 0.28rem;
-  }
-  .work-body {
-    display: block;
-  }
-  .work-title {
-    display: block;
-    font-weight: 600;
-    color: var(--global-text-color);
-    transition: color 0.15s ease;
-  }
-  .work:hover .work-title {
-    color: var(--global-theme-color);
-  }
-  .tag {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--global-text-color-light);
-    border: 1px solid var(--global-divider-color);
-    border-radius: 999px;
-    padding: 0.1rem 0.5rem;
-    margin-left: 0.55rem;
-    vertical-align: middle;
-    white-space: nowrap;
-  }
-  .work-desc {
-    display: block;
-    font-size: 0.9rem;
-    line-height: 1.55;
-    color: var(--global-text-color-light);
-    margin-top: 0.3rem;
-  }
-
-  /* ── Publications ─────────────────────────────────────── */
-  .pub {
-    padding: 0.95rem 0;
-    border-bottom: 1px solid var(--global-divider-color);
-  }
-  .pub:first-child {
-    padding-top: 0;
-  }
-  .pub-title {
-    display: block;
-    font-weight: 600;
-    color: var(--global-text-color);
-    text-decoration: none;
-    transition: color 0.15s ease;
-  }
-  a.pub-title:hover {
-    color: var(--global-theme-color);
-  }
-  .pub-meta {
-    display: block;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: var(--global-text-color-light);
-    margin-top: 0.2rem;
-  }
-
-  /* ── "More" links ─────────────────────────────────────── */
-  .more {
-    display: inline-block;
-    margin-top: 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--global-theme-color);
-    text-decoration: none;
-  }
-  .more:hover {
-    color: var(--global-hover-color);
-  }
-
-  /* ── Responsive ───────────────────────────────────────── */
-  @media (max-width: 640px) {
-    .hero {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-    .hero-photo {
-      order: -1;
-    }
-    .row {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-      padding: 2.25rem 0;
-    }
-    .label {
-      margin-top: 0;
-    }
-  }
-</style>
