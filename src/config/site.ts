@@ -228,8 +228,6 @@ export const site = {
     progressBar: true,
     /** Show back-to-top button. */
     backToTop: true,
-    /** Enable automatic masonry layout for project cards. */
-    masonry: true,
     /** Enable click-to-zoom on images (medium-zoom). */
     mediumZoom: true,
     /** Show styled CSS tooltips on hover for project card icons and publication annotations.
@@ -441,15 +439,15 @@ export const site = {
      * `heading` is used for the page title, your name, and home-page section
      * headings; `body` for everything else; `mono` for code.
      *
-     * These swap among the *bundled* self-hosted families (Lora, Roboto,
-     * Source Code Pro). To use a different family, install its Fontsource
-     * package and add the matching `@font-face` rules in `src/styles/global.css`
-     * before naming it here.
+     * These swap among the *bundled* self-hosted families (Newsreader,
+     * Inter Tight, IBM Plex Mono). To use a different family, install its
+     * Fontsource package and add the matching `@font-face` rules in
+     * `src/styles/global.css` before naming it here.
      */
     font: {
-      heading: "'Lora', Georgia, 'Times New Roman', serif" as string,
-      body: "'Roboto', system-ui, -apple-system, sans-serif" as string,
-      mono: "'Source Code Pro', ui-monospace, monospace" as string,
+      heading: "'Newsreader', Georgia, 'Times New Roman', serif" as string,
+      body: "'Inter Tight', system-ui, -apple-system, sans-serif" as string,
+      mono: "'IBM Plex Mono', ui-monospace, monospace" as string,
     },
   },
 } as const;

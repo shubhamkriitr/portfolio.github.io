@@ -1,44 +1,75 @@
 /* ============================================================
-   Folio design system — shared "polished" primitives + type roles.
-   Used by every content page so the look stays consistent.
+   Folio design system — editorial Swiss primitives + type roles.
+   Used by EVERY content page so the look stays consistent.
 
    TYPE ROLES  (families configured in site.ts → theme.font):
-     • Serif  (--font-heading, Lora)         → identity & page titles
+     • Serif  (--font-heading, Newsreader)   → identity & page titles
                                                 (name, .post-title)
-     • Sans   (--font-sans, Roboto)          → body copy, UI, entry titles
-     • Mono   (--font-mono, Source Code Pro) → DATA & LABELS:
+     • Sans   (--font-sans, Inter Tight)     → body copy, UI, entry titles
+     • Mono   (--font-mono, IBM Plex Mono)   → DATA & LABELS:
                                                 section labels, dates,
-                                                tags, indices, meta links
+                                                tags, indices, actions
+
+   STRUCTURE
+     The mono label rail (.folio-row → .folio-label + .folio-body) is the
+     one organising device across the whole site. On listing pages the rail
+     carries the GROUP (year, category); on the home page it carries the
+     SECTION. Never use a watermark or centred heading to mark a group.
+
    Kept unlayered (imported after _typography.css) so these win over the
    layered rules in global.css's @layer utilities.
    ============================================================ */
 
 /* ── Container ─────────────────────────────────────────────── */
 .folio {
-  max-width: 780px;
+  max-width: 800px;
   margin: 0 auto;
   padding: clamp(3rem, 8vw, 5.5rem) 1.5rem 6rem;
 }
 
-/* ── Section = mono label rail + content ───────────────────── */
+/* ── Section / group = mono label rail + content ───────────── */
 .folio-row {
   display: grid;
-  grid-template-columns: 130px 1fr;
+  grid-template-columns: 140px 1fr;
   gap: 2rem;
-  padding: 2.75rem 0;
+  padding: 3rem 0;
   border-top: 1px solid var(--global-divider-color);
 }
 .folio-label {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--global-text-color-light);
-  margin: 0.35rem 0 0;
+  margin: 0.4rem 0 0;
 }
 .folio-body {
   min-width: 0;
+}
+
+/* ── Page header (left-aligned serif — never centred) ──────── */
+.folio-pagehead {
+  padding-bottom: 2.25rem;
+}
+.folio-pagetitle {
+  font-family: var(--font-heading);
+  font-size: clamp(2.1rem, 4.5vw, 2.85rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--global-text-color);
+  margin: 0;
+}
+.folio-pagedesc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--global-text-color-light);
+  margin: 0.85rem 0 0;
+  max-width: 58ch;
+}
+.folio-pagehead .post-title {
+  text-transform: none;
 }
 
 /* ── Body prose ────────────────────────────────────────────── */
@@ -77,6 +108,16 @@
 .folio-entry:first-child {
   padding-top: 0;
 }
+/* Close the group cleanly: the rail's own rule separates sections, so the
+   final row never carries a trailing hairline. Covers both shapes — an entry
+   nested inside the <li>, and an <li> that IS the entry (e.g. ProjectCard). */
+.folio-stack > li:last-child .folio-entry,
+.folio-stack > li:last-child .folio-worklink,
+.folio-stack > li.folio-entry:last-child,
+.folio-stack > li.folio-worklink:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
 .folio-entry-head {
   display: flex;
   justify-content: space-between;
@@ -97,7 +138,7 @@ a.folio-entry-title:hover {
 /* Mono metadata: dates, ranges, numeric data */
 .folio-date {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.04em;
   color: var(--global-text-color-light);
   white-space: nowrap;
@@ -119,6 +160,9 @@ a.folio-entry-title:hover {
   margin-top: 0.2rem;
 }
 .folio-bullets {
+  /* Tailwind preflight strips list-style, so state it explicitly or ::marker
+     has nothing to colour. */
+  list-style: disc;
   margin: 0.55rem 0 0;
   padding-left: 1.05rem;
   font-size: 0.9rem;
@@ -135,22 +179,23 @@ a.folio-entry-title:hover {
 /* ── Tags / indices (mono) ─────────────────────────────────── */
 .folio-tag {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 600;
+  font-size: 0.6rem;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--global-text-color-light);
   border: 1px solid var(--global-divider-color);
   border-radius: 999px;
-  padding: 0.1rem 0.5rem;
+  padding: 0.12rem 0.5rem;
   margin-left: 0.55rem;
   vertical-align: middle;
   white-space: nowrap;
 }
 .folio-idx {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--global-text-color-light);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Numbered "work" link rows ─────────────────────────────── */
@@ -186,14 +231,83 @@ a.folio-entry-title:hover {
   margin-top: 0.3rem;
 }
 
+/* ── Media row: optional thumbnail beside an entry ─────────── */
+.folio-media {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+.folio-media-thumb {
+  width: 132px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--global-divider-color);
+  filter: saturate(0.9);
+  transition: filter 0.3s ease;
+}
+.folio-media:hover .folio-media-thumb {
+  filter: saturate(1);
+}
+
+/* ── Mono text actions (replaces bordered button clusters) ──── */
+.folio-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin-top: 0.6rem;
+}
+.folio-action {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--global-text-color-light);
+  text-decoration: none;
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.folio-action:hover,
+.folio-action[aria-expanded='true'] {
+  color: var(--global-theme-color);
+  border-bottom-color: var(--global-theme-color);
+}
+
+/* Disclosure panel revealed by a .folio-action (abstract, bibtex) */
+.folio-panel {
+  margin-top: 0.75rem;
+  padding: 0.9rem 1rem;
+  background: var(--global-code-bg-color);
+  border-left: 2px solid var(--global-divider-color);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--global-text-color);
+}
+.folio-panel pre {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 /* ── "More →" links (mono) ─────────────────────────────────── */
 .folio-more {
   display: inline-block;
   margin-top: 1.5rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--global-theme-color);
   text-decoration: none;
@@ -202,18 +316,46 @@ a.folio-entry-title:hover {
   color: var(--global-hover-color);
 }
 
+/* ── Search / text input ───────────────────────────────────── */
+.folio-input {
+  width: 100%;
+  padding: 0.7rem 0;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--global-text-color);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--global-divider-color);
+  transition: border-color 0.15s ease;
+}
+.folio-input::placeholder {
+  color: var(--global-text-color-light);
+}
+.folio-input:focus {
+  outline: none;
+  border-bottom-color: var(--global-theme-color);
+}
+.folio-count {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--global-text-color-light);
+  margin: 0.75rem 0 0;
+}
+
 /* ── Hero (home) ───────────────────────────────────────────── */
 .folio-hero {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 2.5rem;
   align-items: start;
-  padding-bottom: 2.75rem;
+  padding-bottom: 3rem;
 }
 .folio-eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--global-text-color-light);
   margin: 0 0 1.25rem;
@@ -233,9 +375,10 @@ a.folio-entry-title:hover {
   margin: 0;
 }
 .folio-name {
-  font-size: clamp(2.5rem, 6vw, 3.4rem);
+  font-size: clamp(2.6rem, 6.2vw, 3.6rem);
+  font-weight: 600;
   line-height: 1.02;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.028em;
   margin: 0;
   color: var(--global-text-color);
 }
@@ -244,7 +387,7 @@ a.folio-entry-title:hover {
   line-height: 1.55;
   color: var(--global-text-color-light);
   margin: 1rem 0 0;
-  max-width: 34ch;
+  max-width: 36ch;
 }
 .folio-role :where(a) {
   color: var(--global-text-color);
@@ -262,7 +405,7 @@ a.folio-entry-title:hover {
   width: 128px;
   height: 128px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 2px;
   filter: grayscale(1) contrast(1.03);
   transition: filter 0.4s ease;
 }
@@ -270,12 +413,11 @@ a.folio-entry-title:hover {
   filter: grayscale(0);
 }
 
-/* ── Page title (serif, from .post-title) + PDF link ───────── */
-.folio-pagehead {
-  padding-bottom: 0.5rem;
-}
-.folio-pagehead .post-title {
-  text-transform: none;
+/* ── Empty state ───────────────────────────────────────────── */
+.folio-empty {
+  font-size: 0.95rem;
+  color: var(--global-text-color-light);
+  margin: 0;
 }
 
 /* ── Responsive ────────────────────────────────────────────── */
@@ -294,5 +436,12 @@ a.folio-entry-title:hover {
   }
   .folio-label {
     margin-top: 0;
+  }
+  .folio-media {
+    grid-template-columns: 84px 1fr;
+    gap: 0.9rem;
+  }
+  .folio-media-thumb {
+    width: 84px;
   }
 }

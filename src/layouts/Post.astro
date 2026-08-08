@@ -134,39 +134,42 @@ const jsonLd = {
   </Fragment>
   {site.features.progressBar && <ReadingProgress />}
 
-  <div class="page-container py-8">
-    <div class="flex gap-8">
+  <div class="post-shell">
+    <div class="post-cols">
       <!-- TOC sidebar (desktop only) -->
       {
         headings.length > 0 && (
-          <aside class="hidden lg:block w-52 flex-shrink-0">
+          <aside class="post-toc">
             <TOC headings={headings} />
           </aside>
         )
       }
 
       <!-- Post content -->
-      <article class="flex-1 min-w-0">
+      <article class="post-main">
         <!-- Hidden metadata for pagefind structured search -->
         <span data-pagefind-meta="date" style="display:none">{date.toISOString().slice(0, 10)}</span>
 
         <!-- Breadcrumb -->
-        <nav aria-label="Breadcrumb" class="breadcrumb-nav">
-          <a href={`${site.base}/blog/`} class="breadcrumb-link">← Blog</a>
+        <nav aria-label="Breadcrumb" class="post-back">
+          <a href={`${site.base}/blog/`} class="folio-action">&larr; Blog</a>
         </nav>
 
         <!-- Header -->
-        <header class="post-header">
-          <h1 class="post-title" style="margin-bottom: 0.75rem;" data-pagefind-weight="10">
+        <header class="post-head">
+          <h1 class="folio-pagetitle" data-pagefind-weight="10">
             {title}
           </h1>
+          {description && <p class="folio-pagedesc">{description}</p>}
 
-          <PostMeta date={date} tags={tags} categories={categories} readingTime={rt} />
-          {lastmodFormatted && (
-            <p class="post-lastmod" style="font-size: 0.8rem; color: var(--global-text-color-light); margin-top: 0.25rem;">
-              Updated <time datetime={lastmod!.toISOString()}>{lastmodFormatted}</time>
-            </p>
-          )}
+          <div class="post-head-meta">
+            <PostMeta date={date} tags={tags} categories={categories} readingTime={rt} />
+            {lastmodFormatted && (
+              <p class="post-lastmod">
+                Updated <time datetime={lastmod!.toISOString()}>{lastmodFormatted}</time>
+              </p>
+            )}
+          </div>
         </header>
 
         <!-- Body -->
@@ -503,6 +506,68 @@ const jsonLd = {
     </script>
   </>
 )}
+
+<style>
+  /* Reading shell: a wide outer frame with a narrow text measure, plus an
+     optional TOC rail. Mirrors the .folio container rhythm. */
+  .post-shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 4rem) 1.5rem 6rem;
+  }
+
+  .post-cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .post-toc {
+    display: none;
+  }
+
+  .post-main {
+    min-width: 0;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Once the TOC rail appears, the article stops centring and sits beside it. */
+  @media (min-width: 1024px) {
+    .post-cols:has(.post-toc) {
+      grid-template-columns: 200px minmax(0, 1fr);
+    }
+    .post-toc {
+      display: block;
+    }
+    .post-cols:has(.post-toc) .post-main {
+      margin: 0;
+    }
+  }
+
+  .post-back {
+    margin-bottom: 1.5rem;
+  }
+
+  .post-head {
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.25rem;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  .post-head-meta {
+    margin-top: 1rem;
+  }
+
+  .post-lastmod {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--global-text-color-light);
+    margin-top: 0.4rem;
+  }
+</style>
 
 <style is:global>
   /* TikZJax processes <script type="text/tikz"> elements asynchronously (WASM).

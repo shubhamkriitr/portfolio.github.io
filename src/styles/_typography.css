@@ -4,11 +4,12 @@
  */
 
 @theme {
-  --font-sans: 'Roboto', system-ui, -apple-system, sans-serif;
-  --font-condensed: 'Roboto Condensed', 'Arial Narrow', sans-serif;
-  --font-mono: 'Source Code Pro', 'Roboto Mono', 'Fira Code', ui-monospace, monospace;
+  --font-sans: 'Inter Tight', system-ui, -apple-system, sans-serif;
+  /* Inter Tight is already the narrow grotesk — condensed is an alias, not a 4th family. */
+  --font-condensed: 'Inter Tight', system-ui, 'Arial Narrow', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
   /* Serif for display headings (page titles / name). Overridden by site.theme.font.heading. */
-  --font-heading: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-heading: 'Newsreader', Georgia, 'Times New Roman', serif;
 }
 
 /* ─── Base typography ────────────────────────────────────────────────────── */
@@ -69,14 +70,16 @@ code:not(pre code) {
   padding: 0.1em 0.3em;
 }
 
-/* Blockquotes */
+/* Blockquotes — hairline rule, serif voice, no tint block */
 blockquote {
-  border-left: 5px solid var(--global-theme-color);
-  padding: 10px 30px;
+  border-left: 2px solid var(--global-divider-color);
+  padding: 0.15rem 0 0.15rem 1.35rem;
   color: var(--global-text-color-light);
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
   font-style: italic;
-  font-size: 1.2rem;
-  background: var(--global-bg-color);
+  line-height: 1.65;
+  background: none;
   margin: 1.5rem 0;
 }
 

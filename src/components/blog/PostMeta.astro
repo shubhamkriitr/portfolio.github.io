@@ -19,56 +19,63 @@ const formattedDate = d.toLocaleDateString('en-US', {
 const isoDate = d.toISOString();
 ---
 
-<div
-  class="post-meta mt-1 flex flex-wrap items-center gap-2 text-xs"
-  style="color: var(--global-text-color-light);"
->
+<div class="post-meta">
   <time datetime={isoDate}>{formattedDate}</time>
 
+  {readingTime && <span class="sep" aria-hidden="true">/</span>}
+  {readingTime && <span>{readingTime} min read</span>}
+
   {
-    readingTime && (
+    categories.map((cat) => (
       <>
-        <span aria-hidden="true">·</span>
-        <span>{readingTime} min read</span>
+        <span class="sep" aria-hidden="true">
+          /
+        </span>
+        <a href={`${site.base}/blog/category/${cat}/`}>{cat}</a>
       </>
-    )
+    ))
   }
 
   {
-    categories.length > 0 && (
+    tags.map((tag) => (
       <>
-        <span aria-hidden="true">·</span>
-        <div class="flex flex-wrap gap-1">
-          {categories.map((cat) => (
-            <a
-              href={`${site.base}/blog/category/${cat}/`}
-              class="badge-abbr text-xs"
-              style="background-color: var(--global-text-color-light); color: var(--global-hover-text-color);"
-            >
-              {cat}
-            </a>
-          ))}
-        </div>
+        <span class="sep" aria-hidden="true">
+          /
+        </span>
+        <a href={`${site.base}/blog/tag/${tag}/`}>#{tag}</a>
       </>
-    )
-  }
-
-  {
-    tags.length > 0 && (
-      <>
-        <span aria-hidden="true">·</span>
-        <div class="flex flex-wrap gap-1">
-          {tags.map((tag) => (
-            <a
-              href={`${site.base}/blog/tag/${tag}/`}
-              class="badge-abbr text-xs"
-              style="background-color: var(--global-theme-color); color: var(--global-hover-text-color);"
-            >
-              {tag}
-            </a>
-          ))}
-        </div>
-      </>
-    )
+    ))
   }
 </div>
+
+<style>
+  /* Metadata is data: mono, muted, hairline separators — never coloured pills. */
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--global-text-color-light);
+  }
+
+  .sep {
+    opacity: 0.45;
+  }
+
+  .post-meta a {
+    color: var(--global-text-color-light);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .post-meta a:hover {
+    color: var(--global-theme-color);
+    border-bottom-color: var(--global-theme-color);
+  }
+</style>

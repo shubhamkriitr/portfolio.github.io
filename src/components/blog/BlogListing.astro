@@ -1,0 +1,212 @@
+---
+import PostCard from '@components/blog/PostCard.astro';
+import Pagination from '@components/Pagination.astro';
+import { site } from '@config/site';
+import type { CollectionEntry } from 'astro:content';
+
+type LocalPost = CollectionEntry<'posts'>;
+interface ExternalPost {
+  external: true;
+  id: string;
+  url: string;
+  data: {
+    title: string;
+    date: Date;
+    description?: string;
+    tags: string[];
+    categories: string[];
+    image?: string;
+  };
+  body?: undefined;
+}
+type PostEntry = LocalPost | ExternalPost;
+
+interface Props {
+  /** Page title, rendered as the serif page head. */
+  title: string;
+  /** Optional sub-line under the title. */
+  description?: string;
+  /** Posts to render in this listing. */
+  posts: PostEntry[];
+  /** Pinned posts, shown in their own "Featured" rail section above the list. */
+  pinnedPosts?: LocalPost[];
+  /** Mono breadcrumb links shown above the title (e.g. "All posts"). */
+  backLinks?: { label: string; href: string }[];
+  /** Show the tag / category browse row under the description. */
+  showBrowse?: boolean;
+  /** Group posts under year labels in the rail. Off for already-filtered views. */
+  groupByYear?: boolean;
+  /** Label used in the rail when `groupByYear` is false. */
+  listLabel?: string;
+  /** Message shown when there are no posts. */
+  emptyMessage?: string;
+  currentPage?: number;
+  totalPages?: number;
+  prevUrl?: string;
+  nextUrl?: string;
+  basePath?: string;
+}
+
+const {
+  title,
+  description,
+  posts,
+  pinnedPosts = [],
+  backLinks = [],
+  showBrowse = false,
+  groupByYear = true,
+  listLabel = 'Posts',
+  emptyMessage = site.blog.emptyMessage,
+  currentPage,
+  totalPages,
+  prevUrl,
+  nextUrl,
+  basePath,
+} = Astro.props;
+
+const displayTags = site.blog.displayTags;
+const displayCategories = site.blog.displayCategories;
+
+// A pinned post already has its own row in the Featured section — don't list it
+// again below, or the same entry renders twice on the same page.
+const pinnedIds = new Set(pinnedPosts.map((p) => p.id));
+const listedPosts = pinnedIds.size > 0 ? posts.filter((p) => !pinnedIds.has(p.id)) : posts;
+
+const postsByYear = new Map<number, PostEntry[]>();
+if (groupByYear) {
+  for (const post of listedPosts) {
+    const year = post.data.date.getFullYear();
+    if (!postsByYear.has(year)) postsByYear.set(year, []);
+    postsByYear.get(year)!.push(post);
+  }
+}
+const postYears = [...postsByYear.keys()].sort((a, b) => b - a);
+---
+
+<div class="folio">
+  <header class="folio-pagehead">
+    {
+      backLinks.length > 0 && (
+        <div class="folio-actions back">
+          {backLinks.map((l) => (
+            <a class="folio-action" href={l.href}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+      )
+    }
+    <h1 class="folio-pagetitle">{title}</h1>
+    {description && <p class="folio-pagedesc">{description}</p>}
+    {
+      showBrowse && (
+        <div class="folio-actions browse">
+          {displayTags.map((tag) => (
+            <a class="folio-action" href={`${site.base}/blog/tag/${tag}/`}>
+              #{tag}
+            </a>
+          ))}
+          {displayCategories.map((cat) => (
+            <a class="folio-action" href={`${site.base}/blog/category/${cat}/`}>
+              {cat}
+            </a>
+          ))}
+          <a class="folio-action" href={`${site.base}/blog/tags/`}>
+            All tags
+          </a>
+        </div>
+      )
+    }
+  </header>
+
+  {
+    pinnedPosts.length > 0 && (
+      <section class="folio-row">
+        <p class="folio-label">Featured</p>
+        <div class="folio-body">
+          <ul class="folio-stack">
+            {pinnedPosts.map((post) => (
+              <li class="folio-entry">
+                <PostCard post={post} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    posts.length === 0 && pinnedPosts.length === 0 ? (
+      <section class="folio-row">
+        <p class="folio-label">{listLabel}</p>
+        <div class="folio-body">
+          <p class="folio-empty">{emptyMessage}</p>
+        </div>
+      </section>
+    ) : listedPosts.length === 0 ? null : groupByYear ? (
+      postYears.map((year) => (
+        <section class="folio-row">
+          <p class="folio-label">
+            <a class="year-link" href={`${site.base}/blog/year/${year}/`}>
+              {year}
+            </a>
+          </p>
+          <div class="folio-body">
+            <ul class="folio-stack">
+              {postsByYear.get(year)!.map((post) => (
+                <li class="folio-entry">
+                  <PostCard post={post} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))
+    ) : (
+      <section class="folio-row">
+        <p class="folio-label">{listLabel}</p>
+        <div class="folio-body">
+          <ul class="folio-stack">
+            {listedPosts.map((post) => (
+              <li class="folio-entry">
+                <PostCard post={post} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    currentPage !== undefined && totalPages !== undefined && (
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        prevUrl={prevUrl}
+        nextUrl={nextUrl}
+        basePath={basePath ?? `${site.base}/blog/`}
+      />
+    )
+  }
+</div>
+
+<style>
+  .back {
+    margin-bottom: 1.1rem;
+  }
+
+  .browse {
+    margin-top: 1.25rem;
+  }
+
+  .year-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .year-link:hover {
+    color: var(--global-theme-color);
+  }
+</style>

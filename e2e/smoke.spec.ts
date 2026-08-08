@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test';
 
 test('homepage loads with author name in title', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle(/Albert Einstein/);
+  await expect(page).toHaveTitle(/Shubham Kumar/);
   await expect(page.locator('main')).toBeVisible();
 });
 

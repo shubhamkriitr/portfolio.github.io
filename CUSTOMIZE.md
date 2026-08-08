@@ -763,7 +763,6 @@ features: {
   search: true,         // ⌘K search
   progressBar: true,    // reading progress bar on posts
   backToTop: true,      // floating back-to-top button
-  masonry: true,        // auto masonry layout for projects
   mediumZoom: true,     // click-to-zoom on images
   cookieConsent: false, // GDPR cookie dialog
   newsletter: false,    // newsletter form in footer

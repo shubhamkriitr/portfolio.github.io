@@ -9,31 +9,23 @@ const lastUpdated = new Date().toLocaleDateString('en-US', {
 });
 
 const isSticky = site.footer.position === 'sticky';
-const footerStyle = [
-  'background-color: var(--global-footer-bg-color);',
-  'color: var(--global-footer-text-color);',
-  'padding: 1rem 0;',
-  isSticky ? 'position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;' : 'margin-top: auto;',
-].join(' ');
+const footerStyle = isSticky
+  ? 'position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background-color: var(--global-bg-color);'
+  : 'margin-top: auto;';
 ---
 
-<footer style={footerStyle}>
-  <div class="page-container text-center text-sm">
+<footer class="site-footer" style={footerStyle}>
+  <div class="footer-inner">
     <p>
       &copy; {year}
       {site.author.name}.
       {site.footer.text && <span set:html={site.footer.text} />}
-      {site.footer.lastUpdated && <span class="ml-2">Last updated: {lastUpdated}.</span>}
+      {site.footer.lastUpdated && <span>Last updated: {lastUpdated}.</span>}
     </p>
     {
       site.footer.impressum && (
-        <p class="mt-1">
-          <a
-            href={site.footer.impressum}
-            style="color: var(--global-footer-link-color); text-decoration: none;"
-          >
-            Legal Notice
-          </a>
+        <p class="legal">
+          <a href={site.footer.impressum}>Legal Notice</a>
         </p>
       )
     }
@@ -41,12 +33,37 @@ const footerStyle = [
 </footer>
 
 <style>
-  footer a {
-    color: var(--global-footer-link-color);
+  /* Footer sits on the page ground — a hairline separates it, not a slab. */
+  .site-footer {
+    color: var(--global-footer-text-color);
+    border-top: 1px solid var(--global-divider-color);
   }
 
-  footer a:hover {
-    color: var(--global-footer-text-color);
-    text-decoration: underline;
+  .footer-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 2.5rem;
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+
+  .footer-inner p {
+    margin: 0;
+  }
+
+  .legal {
+    margin-top: 0.4rem;
+  }
+
+  .site-footer a {
+    color: var(--global-footer-link-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--global-divider-color);
+    transition: border-color 0.15s ease;
+  }
+
+  .site-footer a:hover {
+    border-bottom-color: var(--global-theme-color);
+    color: var(--global-theme-color);
   }
 </style>

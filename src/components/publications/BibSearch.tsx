@@ -143,8 +143,6 @@ function PublicationEntry({
   const visibleAuthorLinks = maxAuthorLimit ? authorLinks.slice(0, maxAuthorLimit) : authorLinks;
   const hiddenCount = authorLinks.length - visibleAuthorLinks.length;
 
-  const contentColClass = showThumbnails && (abbr || preview) ? 'col-sm-8' : 'col-sm-10';
-
   // Resolve asset paths — use full URL if provided, otherwise prefix with configured dir
   const previewSrc = preview.includes('://') ? preview : `${previewDir}${preview}`;
   const pdfHref = pdfPath.startsWith('http') ? pdfPath : `${pdfDir}${pdfPath}`;
@@ -154,44 +152,45 @@ function PublicationEntry({
 
   const scholarCount = googleScholarId ? citations[googleScholarId] : undefined;
 
+  const hasMedia = showThumbnails && !!preview;
+
   return (
-    <li>
-      <div className="row">
-        {/* Left column: abbr badge + thumbnail */}
-        {showThumbnails && (abbr || preview) && (
-          <div className="col col-sm-2 abbr">
-            {abbr && <abbr className="badge w-100 rounded">{abbr}</abbr>}
-            {preview && (
-              <img
-                className="preview z-depth-1 rounded"
-                src={previewSrc}
-                alt={preview}
-                loading="lazy"
-              />
-            )}
-          </div>
+    <li className="folio-entry">
+      <div className={hasMedia ? 'folio-media' : undefined}>
+        {/* Thumbnail — the abbr rides on the entry as a mono tag, not a ribbon */}
+        {hasMedia && (
+          <img className="folio-media-thumb" src={previewSrc} alt={preview} loading="lazy" />
         )}
 
-        {/* Right column: content */}
-        <div id={entry.key} className={contentColClass}>
+        <div id={entry.key} className="pub-body">
           {/* Title — links to internal detail page when available, otherwise to external URL */}
           <div className="title">
             {detailBase !== undefined ? (
-              <a href={`${detailBase}/publications/${entry.key}/`}>{title}</a>
+              <a className="folio-entry-title" href={`${detailBase}/publications/${entry.key}/`}>
+                {title}
+              </a>
             ) : url ? (
-              <a href={url} target="_blank" rel="noopener noreferrer">
+              <a
+                className="folio-entry-title"
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {title}
               </a>
             ) : (
-              title
+              <span className="folio-entry-title">{title}</span>
             )}
+            {abbr && <span className="folio-tag">{abbr}</span>}
           </div>
 
           {/* Authors with coauthor links and self-identification */}
           {authorLinks.length > 0 && (
-            <div className="author">
+            <div className="folio-entry-meta pub-authors">
               {visibleAuthorLinks.map((al, i) => {
-                const isLast = i === visibleAuthorLinks.length - 1 && hiddenCount === 0;
+                // The "and N more" span supplies its own leading comma, so the
+                // last visible author must never emit a trailing separator.
+                const isLast = i === visibleAuthorLinks.length - 1;
                 const nameEl = al.isSelf ? <em>{al.name}</em> : <>{al.name}</>;
                 return (
                   <span key={i}>
@@ -227,7 +226,7 @@ function PublicationEntry({
 
           {/* Venue + year + additional_info */}
           {(venue || year) && (
-            <div className="periodical">
+            <div className="folio-entry-meta pub-venue">
               {venue && <em>{venue}</em>}
               {venue && year ? ', ' : ''}
               {year || ''}
@@ -236,21 +235,21 @@ function PublicationEntry({
           )}
 
           {/* Link buttons */}
-          <div className="links">
+          <div className="folio-actions">
             {hasAward && (
               <button
-                className="award btn btn-sm z-depth-0"
+                className="folio-action"
+                aria-expanded={awardOpen}
                 onClick={() => setAwardOpen(!awardOpen)}
-                style={{ cursor: 'pointer', background: 'none' }}
               >
                 {awardName || 'Awarded'}
               </button>
             )}
             {abstract && (
               <button
-                className="abstract btn btn-sm z-depth-0"
+                className="folio-action"
+                aria-expanded={abstractOpen}
                 onClick={() => setAbstractOpen(!abstractOpen)}
-                style={{ cursor: 'pointer', background: 'none' }}
               >
                 {labels.abstract ?? 'Abs'}
               </button>
@@ -260,7 +259,7 @@ function PublicationEntry({
                 href={`https://doi.org/${doi}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 DOI
               </a>
@@ -270,7 +269,7 @@ function PublicationEntry({
                 href={`https://arxiv.org/abs/${arxiv}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 arXiv
               </a>
@@ -280,16 +279,16 @@ function PublicationEntry({
                 href={`https://hal.science/${hal}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 HAL
               </a>
             )}
             {bibtex_show && (
               <button
-                className="bibtex btn btn-sm z-depth-0"
+                className="folio-action"
+                aria-expanded={bibtexOpen}
                 onClick={() => setBibtexOpen(!bibtexOpen)}
-                style={{ cursor: 'pointer', background: 'none' }}
               >
                 {labels.bibtex ?? 'Bib'}
               </button>
@@ -299,7 +298,7 @@ function PublicationEntry({
                 href={entry.fields.html}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 HTML
               </a>
@@ -309,7 +308,7 @@ function PublicationEntry({
                 href={pdfHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 PDF
               </a>
@@ -319,7 +318,7 @@ function PublicationEntry({
                 href={suppHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 {labels.supp ?? 'Supp'}
               </a>
@@ -329,7 +328,7 @@ function PublicationEntry({
                 href={slidesHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 Slides
               </a>
@@ -339,7 +338,7 @@ function PublicationEntry({
                 href={posterHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 Poster
               </a>
@@ -349,7 +348,7 @@ function PublicationEntry({
                 href={video}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 Video
               </a>
@@ -359,7 +358,7 @@ function PublicationEntry({
                 href={codeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 Code
               </a>
@@ -369,7 +368,7 @@ function PublicationEntry({
                 href={blog}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 Blog
               </a>
@@ -379,13 +378,13 @@ function PublicationEntry({
                 href={website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm z-depth-0"
+                className="folio-action"
               >
                 Website
               </a>
             )}
             {detailBase !== undefined && (
-              <a href={`${detailBase}/publications/${entry.key}/`} className="btn btn-sm z-depth-0">
+              <a href={`${detailBase}/publications/${entry.key}/`} className="folio-action">
                 Details
               </a>
             )}
@@ -420,23 +419,22 @@ function PublicationEntry({
             </div>
           )}
 
-          {/* Award hidden block */}
-          {hasAward && (
-            <div className={`award hidden${awardOpen ? 'open' : ''}`}>
+          {/* Disclosure panels — mounted only while open */}
+          {hasAward && awardOpen && (
+            <div className="folio-panel">
               <p>{hasAward}</p>
             </div>
           )}
 
-          {/* Abstract hidden block */}
-          {abstract && (
-            <div className={`abstract hidden${abstractOpen ? 'open' : ''}`}>
+          {abstract && abstractOpen && (
+            <div className="folio-panel">
               <p>{abstract}</p>
             </div>
           )}
 
-          {/* BibTeX hidden block — internal fields filtered out */}
-          {bibtex_show && (
-            <div className={`bibtex hidden${bibtexOpen ? 'open' : ''}`}>
+          {/* BibTeX — internal fields filtered out */}
+          {bibtex_show && bibtexOpen && (
+            <div className="folio-panel">
               <pre>{getCleanBibtex(entry)}</pre>
             </div>
           )}
@@ -488,47 +486,38 @@ export function BibSearch({
 
   return (
     <div className="publications">
-      {/* Search bar */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      {/* Search \u2014 hairline underline, no boxed input */}
+      <div className="pub-search">
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={labels.searchPlaceholder ?? 'Search publications\u2026'}
-          style={{
-            width: '100%',
-            padding: '0.5rem 0.75rem',
-            fontSize: '0.9375rem',
-            border: '1px solid var(--global-divider-color)',
-            borderRadius: '6px',
-            color: 'var(--global-text-color)',
-            backgroundColor: 'transparent',
-            outline: 'none',
-          }}
+          className="folio-input"
           aria-label="Search publications"
         />
-        <p
-          style={{
-            marginTop: '0.375rem',
-            fontSize: '0.8125rem',
-            color: 'var(--global-text-color-light)',
-          }}
-        >
-          Showing {filtered.length} of {entries.length} publication{entries.length !== 1 ? 's' : ''}
+        <p className="folio-count">
+          {filtered.length} of {entries.length} publication{entries.length !== 1 ? 's' : ''}
         </p>
       </div>
 
-      {/* Publications grouped by year */}
+      {/* Grouped by year \u2014 the year rides in the mono label rail */}
       {filtered.length === 0 ? (
-        <p style={{ color: 'var(--global-text-color-light)' }}>
-          {labels.noResults ?? 'No publications match your search.'}
-        </p>
+        <section className="folio-row">
+          <p className="folio-label">No results</p>
+          <div className="folio-body">
+            <p className="folio-empty">
+              {labels.noResults ?? 'No publications match your search.'}
+            </p>
+          </div>
+        </section>
       ) : (
         years.map((year) => (
-          <div key={year}>
-            <h2 className="year">{year}</h2>
-            <ol className="bibliography">
-              {byYear.get(year)!.map((entry) => (
+          <section className="folio-row" key={year}>
+            <p className="folio-label">{year}</p>
+            <div className="folio-body">
+              <ol className="folio-stack">
+                {byYear.get(year)!.map((entry) => (
                 <PublicationEntry
                   key={entry.key}
                   entry={entry}
@@ -544,9 +533,10 @@ export function BibSearch({
                   scholarUserId={scholarUserId}
                   badges={badges}
                 />
-              ))}
-            </ol>
-          </div>
+                ))}
+              </ol>
+            </div>
+          </section>
         ))
       )}
     </div>

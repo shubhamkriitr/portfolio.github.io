@@ -1,6 +1,5 @@
 ---
-import PostCard from '@components/blog/PostCard.astro';
-import Pagination from '@components/Pagination.astro';
+import BlogListing from '@components/blog/BlogListing.astro';
 import { site } from '@config/site';
 import PageLayout from '@layouts/Page.astro';
 import { getCollection } from 'astro:content';
@@ -38,32 +37,22 @@ const base = site.base;
   title={`Blog — ${year} — Page ${currentPage}`}
   description={`Posts from ${year}, page ${currentPage}`}
 >
-  <div class="post">
-    <header class="post-header">
-      <h1 class="post-title">{year}</h1>
-      <p>
-        <a href={`${base}/blog/`} style="color: var(--global-theme-color);">← Back to blog</a>
-      </p>
-    </header>
-    <ul class="post-list">
-      {
-        posts.map((post) => (
-          <li>
-            <PostCard post={post} />
-          </li>
-        ))
-      }
-    </ul>
-    <Pagination
-      currentPage={currentPage}
-      totalPages={totalPages}
-      prevUrl={currentPage === 2
-        ? `${base}/blog/year/${year}/`
-        : `${base}/blog/year/${year}/page/${currentPage - 1}/`}
-      nextUrl={currentPage < totalPages
-        ? `${base}/blog/year/${year}/page/${currentPage + 1}/`
-        : undefined}
-      basePath={`${base}/blog/year/${year}/`}
-    />
-  </div>
+  <BlogListing
+    title={String(year)}
+    description={`All posts from ${year}.`}
+    posts={posts}
+    backLinks={[{ label: 'All posts', href: `${base}/blog/` }]}
+    groupByYear={false}
+    listLabel={String(year)}
+    emptyMessage={`No posts from ${year}.`}
+    currentPage={currentPage}
+    totalPages={totalPages}
+    prevUrl={currentPage === 2
+      ? `${base}/blog/year/${year}/`
+      : `${base}/blog/year/${year}/page/${currentPage - 1}/`}
+    nextUrl={currentPage < totalPages
+      ? `${base}/blog/year/${year}/page/${currentPage + 1}/`
+      : undefined}
+    basePath={`${base}/blog/year/${year}/`}
+  />
 </PageLayout>

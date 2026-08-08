@@ -17,22 +17,32 @@ import { getCollection } from 'astro:content';
 import React from 'react';
 import satori from 'satori';
 
-// Load fonts once at module level (build-time only — never runs in the browser)
-const fontRoot = resolve('node_modules/@fontsource/roboto/files');
-const fontRegular = readFileSync(resolve(fontRoot, 'roboto-latin-400-normal.woff'));
-const fontBold = readFileSync(resolve(fontRoot, 'roboto-latin-700-normal.woff'));
+// Load fonts once at module level (build-time only — never runs in the browser).
+// Satori cannot read variable woff2, so these come from the *static* Fontsource
+// packages, not the @fontsource-variable ones the site's CSS uses.
+const sansRoot = resolve('node_modules/@fontsource/inter-tight/files');
+const serifRoot = resolve('node_modules/@fontsource/newsreader/files');
 
 const FONTS = [
   {
-    name: 'Roboto',
-    data: fontRegular.buffer as ArrayBuffer,
+    name: 'Inter Tight',
+    data: readFileSync(resolve(sansRoot, 'inter-tight-latin-400-normal.woff'))
+      .buffer as ArrayBuffer,
     weight: 400 as const,
     style: 'normal' as const,
   },
   {
-    name: 'Roboto',
-    data: fontBold.buffer as ArrayBuffer,
-    weight: 700 as const,
+    name: 'Inter Tight',
+    data: readFileSync(resolve(sansRoot, 'inter-tight-latin-600-normal.woff'))
+      .buffer as ArrayBuffer,
+    weight: 600 as const,
+    style: 'normal' as const,
+  },
+  {
+    name: 'Newsreader',
+    data: readFileSync(resolve(serifRoot, 'newsreader-latin-600-normal.woff'))
+      .buffer as ArrayBuffer,
+    weight: 600 as const,
     style: 'normal' as const,
   },
 ];
@@ -57,6 +67,7 @@ function ogCard(title: string, description: string | undefined, type: string) {
     : '';
   const hostname = site.url.replace(/^https?:\/\//, '');
 
+  // Editorial card: paper ground, serif title, mono-ish meta, hairline rules.
   return React.createElement(
     'div',
     {
@@ -65,115 +76,95 @@ function ogCard(title: string, description: string | undefined, type: string) {
         flexDirection: 'column',
         width: W,
         height: H,
-        backgroundColor: '#ffffff',
-        fontFamily: 'Roboto',
-        position: 'relative',
-        padding: '0',
+        backgroundColor: '#fafaf8',
+        fontFamily: 'Inter Tight',
+        padding: '64px 80px',
+        justifyContent: 'space-between',
       },
     },
-    // Left accent bar
-    React.createElement('div', {
-      style: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: 12,
-        backgroundColor: accent,
-      },
-    }),
-    // Top stripe
-    React.createElement('div', {
-      style: {
-        width: W,
-        height: 8,
-        backgroundColor: accent,
-        flexShrink: 0,
-      },
-    }),
-    // Main content
+    // Eyebrow: accent dot + author / section
     React.createElement(
       'div',
-      {
+      { style: { display: 'flex', alignItems: 'center' } },
+      React.createElement('div', {
         style: {
-          display: 'flex',
-          flexDirection: 'column',
-          flex: 1,
-          padding: '52px 72px 44px 84px',
-          justifyContent: 'space-between',
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          backgroundColor: accent,
+          marginRight: 14,
         },
-      },
-      // Author / section label
+      }),
       React.createElement(
         'div',
         {
           style: {
-            fontSize: 22,
-            color: '#888888',
-            fontWeight: 400,
-            letterSpacing: '0.01em',
+            fontSize: 21,
+            color: '#6b6862',
+            fontWeight: 600,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
           },
         },
         authorLine,
       ),
-      // Title block
-      React.createElement(
-        'div',
-        { style: { display: 'flex', flexDirection: 'column', gap: 20 } },
-        React.createElement(
-          'div',
-          {
-            style: {
-              fontSize: title.length > 60 ? 46 : title.length > 40 ? 52 : 60,
-              fontWeight: 700,
-              color: '#1a1a1a',
-              lineHeight: 1.15,
-            },
-          },
-          title,
-        ),
-        desc &&
-          React.createElement(
-            'div',
-            {
-              style: {
-                fontSize: 26,
-                color: '#555555',
-                fontWeight: 400,
-                lineHeight: 1.45,
-              },
-            },
-            desc,
-          ),
-      ),
-      // Footer
+    ),
+    // Title block
+    React.createElement(
+      'div',
+      { style: { display: 'flex', flexDirection: 'column' } },
       React.createElement(
         'div',
         {
           style: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            fontFamily: 'Newsreader',
+            fontSize: title.length > 60 ? 54 : title.length > 40 ? 62 : 70,
+            fontWeight: 600,
+            color: '#16161a',
+            lineHeight: 1.1,
+            letterSpacing: '-0.02em',
           },
         },
-        React.createElement(
-          'div',
-          { style: { fontSize: 20, color: '#aaaaaa', fontWeight: 400 } },
-          hostname,
-        ),
+        title,
+      ),
+      desc &&
         React.createElement(
           'div',
           {
             style: {
-              fontSize: 16,
-              color: accent,
-              fontWeight: 700,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
+              fontSize: 26,
+              color: '#6b6862',
+              fontWeight: 400,
+              lineHeight: 1.45,
+              marginTop: 24,
             },
           },
-          'as-folio',
+          desc,
         ),
+    ),
+    // Footer above a hairline rule
+    React.createElement(
+      'div',
+      { style: { display: 'flex', flexDirection: 'column' } },
+      React.createElement('div', {
+        style: {
+          width: '100%',
+          height: 1,
+          backgroundColor: '#dedcd6',
+          marginBottom: 22,
+        },
+      }),
+      React.createElement(
+        'div',
+        {
+          style: {
+            fontSize: 20,
+            color: '#6b6862',
+            fontWeight: 500,
+            letterSpacing: '0.06em',
+          },
+        },
+        hostname,
       ),
     ),
   );
