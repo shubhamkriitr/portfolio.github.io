@@ -125,11 +125,12 @@ export const site = {
      * `href` values are relative to the site root (base is prepended automatically).
      */
     items: [
-      { label: 'about', href: '/' },
-      { label: 'publications', href: '/publications/' },
-      { label: 'projects', href: '/projects/' },
-      { label: 'blog', href: '/blog/' },
-      { label: 'cv', href: '/cv/' },
+      { label: 'About', href: '/' },
+      { label: 'Publications', href: '/publications/' },
+      { label: 'Projects', href: '/projects/' },
+      { label: 'Blog', href: '/blog/' },
+      // Rendered verbatim — initialisms stay uppercase rather than title-cased.
+      { label: 'CV', href: '/cv/' },
     ] as NavItem[],
   },
 
@@ -420,10 +421,13 @@ export const site = {
 
   theme: {
     /**
-     * Default color theme.
-     * 'system' follows OS preference.
+     * Default color theme for a first-time visitor.
+     * 'system' follows the OS preference; 'light' / 'dark' pin it.
+     *
+     * This is only the default. A visitor who uses the navbar toggle has
+     * their choice stored in localStorage, and that always wins on return.
      */
-    default: 'system' as 'light' | 'dark' | 'system',
+    default: 'light' as 'light' | 'dark' | 'system',
 
     /**
      * Primary accent color used for links, active nav items, badges, and highlights.
