@@ -36,7 +36,7 @@
 }
 .folio-label {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -137,7 +137,7 @@ a.folio-entry-title:hover {
 /* Mono metadata: dates, ranges, numeric data */
 .folio-date {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.04em;
   color: var(--global-text-color-light);
   white-space: nowrap;
@@ -259,7 +259,7 @@ a.folio-entry-title:hover {
 }
 .folio-action {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -353,7 +353,7 @@ a.folio-entry-title:hover {
 }
 .folio-eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--global-text-color-light);
@@ -369,9 +369,13 @@ a.folio-entry-title:hover {
   margin-right: 0.55rem;
   vertical-align: middle;
 }
+/* moreInfo may wrap its text in a <p>; keep it on the dot's line. */
 .folio-eyebrow :where(p) {
   display: inline;
   margin: 0;
+}
+.folio-eyebrow .dot {
+  display: inline;
 }
 .folio-name {
   font-size: clamp(2.9rem, 7vw, 4.1rem);
@@ -403,7 +407,7 @@ a.folio-entry-title:hover {
 /* Supporting credentials: mono, muted — reads as a caption under the lead. */
 .folio-credentials {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   line-height: 1.7;
@@ -425,16 +429,15 @@ a.folio-entry-title:hover {
 .folio-links {
   margin-top: 1.5rem;
 }
+/* Full colour. The grayscale-until-hover trick is an al-folio inheritance that
+   reads as dated and makes a headshot look drab — a hairline frame does the
+   compositional work instead. */
 .folio-photo img {
-  width: 128px;
-  height: 128px;
+  width: 132px;
+  height: 132px;
   object-fit: cover;
   border-radius: 2px;
-  filter: grayscale(1) contrast(1.03);
-  transition: filter 0.4s ease;
-}
-.folio-photo img:hover {
-  filter: grayscale(0);
+  border: 1px solid var(--global-divider-color);
 }
 
 /* ── Empty state ───────────────────────────────────────────── */

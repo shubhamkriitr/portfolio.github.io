@@ -428,19 +428,22 @@ export const site = {
     /**
      * Primary accent color used for links, active nav items, badges, and highlights.
      * Accepts any CSS color string (hex, hsl, rgb, etc.).
-     * Set to 'auto' to use the built-in defaults (purple in light mode, cyan in dark mode).
+     * Set to 'auto' to fall back to the defaults in `src/styles/_colors.css`.
      *
-     * Example presets:
-     *   ETH blue (current): { light: '#215caf', dark: '#6ba4de' }
-     *   Purple (default):   { light: '#b509ac', dark: '#2698ba' }
-     *   Blue:               { light: '#0076df', dark: '#68c0d9' }
-     *   Red:                { light: '#ff3636', dark: '#f29105' }
-     *   Green:              { light: '#009f06', dark: '#b7d12a' }
-     *   Orange:             { light: '#f29105', dark: '#efcc00' }
+     * The ground is warm ivory, so accents are kept low in saturation — a
+     * bright, cold hue fights the paper. All three below pass WCAG AA against
+     * both the light and dark grounds:
+     *
+     *   Slate blue (current): { light: '#2f5169', dark: '#8fb6d4' }
+     *   Oxblood:              { light: '#8a3d2c', dark: '#e0917c' }  warmer
+     *   Petrol:               { light: '#28535a', dark: '#7fbac2' }  cooler
+     *
+     * If you use a brighter hue, re-check contrast — the muted text colour is
+     * only 5.5:1 and the accent should not sit below it.
      */
     color: {
-      light: '#215caf' as string,
-      dark: '#6ba4de' as string,
+      light: '#2f5169' as string,
+      dark: '#8fb6d4' as string,
     },
 
     /**

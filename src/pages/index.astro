@@ -36,8 +36,11 @@ const avatarFallback = withBase('/assets/img/prof_pic.jpg');
     <!-- ── Hero ─────────────────────────────────────────────── -->
     <header class="folio-hero">
       <div class="folio-hero-main">
+        {/* A <div>, not a <p>: `moreInfo` is author-supplied HTML and may itself
+            contain a <p>, which the parser would hoist out of a <p> parent —
+            orphaning the dot onto its own line. */}
         {site.author.moreInfo && (
-          <p class="folio-eyebrow"><span class="dot" set:html={site.author.moreInfo} /></p>
+          <div class="folio-eyebrow"><span class="dot" set:html={site.author.moreInfo} /></div>
         )}
         <h1 class="post-title folio-name">
           {(site.title as string) === 'blank' ? site.author.name : site.title}

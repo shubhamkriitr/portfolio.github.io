@@ -11,20 +11,29 @@
 /* ─── Neutral scale + accent defaults ────────────────────────────────────── */
 
 :root {
-  /* Paper → ink, warm neutral. Used to build both themes. */
-  --paper: #fafaf8;
-  --paper-sunk: #f2f1ec;
-  --ink: #16161a;
-  --ink-muted: #6b6862;
+  /* Paper → ink. Committed to ONE temperature: the ground is warm ivory, so
+     the ink is a warm near-black and the accent is desaturated to match.
+     (Mixing warm paper with a cool blue-black ink is what made the earlier
+     palette feel subtly off.) */
+  --paper: #faf8f3;
+  --paper-sunk: #f1ede4;
+  --ink: #1c1a17;
+  --ink-muted: #6b6459;
 
-  --ink-dark: #121214;
-  --ink-dark-sunk: #1b1b1f;
-  --paper-dark: #e7e5e0;
-  --paper-dark-muted: #97948d;
+  --ink-dark: #171614;
+  --ink-dark-sunk: #211f1c;
+  --paper-dark: #eae6dd;
+  --paper-dark-muted: #9c9488;
 
-  /* Accent fallbacks when site.theme.color is 'auto'. */
-  --accent-light: #215caf;
-  --accent-dark: #6ba4de;
+  /* Accent fallbacks when site.theme.color is 'auto'.
+     Deep slate-blue — keeps a blue identity but low enough in saturation to
+     sit on warm ivory. Both pass WCAG AA against their grounds.
+     Alternates, if you want a different register:
+       oxblood  { light: #8a3d2c, dark: #e0917c }   warmer, more literary
+       petrol   { light: #28535a, dark: #7fbac2 }   cooler, more technical
+     Swap them in site.ts → theme.color. */
+  --accent-light: #2f5169;
+  --accent-dark: #8fb6d4;
 
   --color-white: #ffffff;
   --color-black: #000000;

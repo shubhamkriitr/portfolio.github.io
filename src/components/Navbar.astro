@@ -39,8 +39,8 @@ const items = site.navbar.items;
     <!-- Brand -->
     <a
       href={`${site.base}/`}
-      class="text-xl"
-      style="color: var(--global-text-color); text-decoration: none; font-family: var(--font-heading); font-weight: var(--font-heading-weight, 400); letter-spacing: 0;"
+      class="site-brand"
+      style="color: var(--global-text-color); text-decoration: none;"
     >
       {site.author.name}
     </a>
@@ -281,6 +281,16 @@ const items = site.navbar.items;
 </script>
 
 <style>
+  /* The display serif is drawn for large sizes — at ~20px it goes spindly.
+     The brand uses the body grotesk instead, so the serif stays reserved for
+     the hero name and page titles where its contrast actually reads. */
+  .site-brand {
+    font-family: var(--font-sans);
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+  }
+
   /* ── Hamburger animation ────────────────────────────────────────────── */
   .icon-bar {
     transition: all 0.2s;
